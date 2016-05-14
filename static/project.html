@@ -1,0 +1,230 @@
+<!doctype html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/page.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/css/calendar.css">
+</head>
+
+
+
+<body>
+<div class="container">
+<nav class="navbar navbar-default" role="navigation">
+ <ul class="nav nav-tabs" style="padding-left:30%">
+  <li role="presentation" class="active"><a href="calendar">Naptár</a></li>
+  <li role="presentation"><a href="profile">Profil</a></li>
+  <li role="presentation"><a href="project">Adminisztráció</a></li>
+  <li role="presentation"><a href="logout">Kilépés</a></li>
+  <li role="presentation"><a href="#"><img src="/img/image_normal.jpg"></a></li>
+</ul>
+</div>
+</nav>
+</div>
+<div class="container" style="margin-bottom:20px;width:600px">
+  <div class="col-lg-3" style="text-align:center;width:100px">
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#myModal">Új Projekt</a></div>
+ <div class="col-lg-3"  style="text-align:center;width:100px">
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#myModal2">Új Feladat</a></div>
+ <div class="col-lg-3"  style="text-align:center;width:200px">
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#myModal3">Felhasználó hozzáadása</a></div>
+ <div class="col-lg-3"  style="text-align:center;width:100px"><select class="btn btn-default"><option>Projekt 1</option></select></div>
+</div>
+
+<div class="container">
+<div class="col-lg-3">
+  <ul><li data-toggle = "modal" data-target = "#myModal2">Feladat 1</li>
+  <li  data-toggle = "modal" data-target = "#myModal2">Feladat 2</li></ul>
+</div>
+
+<div class="col-lg-6">
+  <div id="calendar"></div>
+  </div>
+  <div class="col-lg-3" style="text-align:center">
+    <ul><li data-toggle = "modal" data-target = "#myModal4">Béla</li>
+  <li data-toggle = "modal" data-target = "#myModal4">Ferenc</li></ul>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class = "modal fade" id = "myModal" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:400px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+            Új projekt
+            </h4>
+         </div>
+         
+         <div class = "modal-body">
+           <div class="col-lg-12">Projekt Neve: <input type="text"></input></div>
+         </div>            
+            <button type = "button" class = "btn btn-primary">
+               Submit changes
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   
+</div><!-- /.modal -->
+
+
+<div class = "modal fade" id = "myModal2" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:400px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+            Új Feladat
+            </h4>
+         </div>
+         
+         <div class = "modal-body" style="text-align:center">
+         <div class="col-lg-12">Projekt neve: Test1</div>
+         <div class="col-lg-12">Felhasználó:  <select class="btn btn-default"><option>Felhasználó 1</option></select></div>
+         <div class="col-lg-12">Határidő     <input type="text" id="uDate" ></div>
+         <div class="col-lg-12"><input type="checkbox">Kész</input></div>
+         <div class="col-lg-12">Projekt Leírása: <input type="text"></input></div>
+         </div>            
+            <button type = "button" class = "btn btn-primary">
+               Submit changes
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   
+</div><!-- /.modal -->
+
+
+<div class = "modal fade" id = "myModal3" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:400px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+            Felhasználó hozzádása
+            </h4>
+         </div>
+         
+         <div class = "modal-body" style="text-align:center">
+         <select class="btn btn-default"><option>Felhasználó 1</option></select>
+         <br><button class="btn btn-default">Hozzáad</button>
+
+         <br>
+         Felhasználó n
+         </div>            
+            <button type = "button" class = "btn btn-primary">
+               Submit changes
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   
+</div><!-- /.modal -->
+
+<div class = "modal fade" id = "myModal4" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:300px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+Üzenet            </h4>
+         </div>
+         
+         <div class = "modal-body" style="text-align:center">
+         <div class="col-lg-12" style="height:80%">Mév : Üzenet      Dátum</div>
+          <div class="col-lg-12"><input type="text" /></div>
+         </div>            
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+
+
+      <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+       <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+              <script src="/js/bootstrap.min.js"></script>
+<script>
+       $.getScript('http://arshaw.com/js/fullcalendar-1.6.4/fullcalendar/fullcalendar.min.js',function(){
+  
+  var date = new Date();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
+  
+  $('#calendar').fullCalendar({
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    },
+    editable: true,
+    events: [
+    {
+      title: 'Feladat 1',
+      start: new Date(y,m,d,10,0),
+      end: new Date(y,m,d,12,0),
+      allDay: false
+    },
+      {
+      title: 'Feladat 2',
+      start: new Date(y,m,d,15,0),
+      end: new Date(y,m,d,19,0),
+      allDay: false
+    }
+    ]
+  });
+})
+
+
+</script>
+
+<script>
+   $(function () { $('#myModal').Hide};$('#myModal2').Hide};$('#myModal3').Hide});
+</script>
+                <script type="text/javascript">
+  $(function(){
+    $( "#uDate" ).datepicker({
+  yearRange: "1950:2016",
+ changeYear:true,
+ changeMonth: true
+ });
+
+    var box = $('.container').children().eq(1);
+    $(".show-buttons").on("click", "button" ,function(event){   
+        box.removeClass();
+        box.addClass( $(this).attr('class')) ;
+        console.log("click " + $(this).attr('class'));
+    });
+  });
+  </script>
+</body>

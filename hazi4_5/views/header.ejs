@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" ng-app="calendar">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/page.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/css/calendar.css">
+
+<link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
+<!-- jquery, moment, and angular have to get included before fullcalendar -->
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+<link rel='stylesheet prefetch' href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.0-rc2/angular-material.css'>
+    <link rel="stylesheet" href="../css/page.css" />
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js'></script>
+    <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
+    <script src='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.0-rc2/angular-material.js'></script>
+<script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
+<script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+<script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
+   	<link rel="stylesheet" href="bower_components/angular-color-picker/dist/angularjs-color-picker.min.css" />
+    <script src="bower_components/tinycolor/tinycolor.js"></script>
+    <script src="bower_components/angular-color-picker/dist/angularjs-color-picker.min.js"></script>
+<script src="../js/project_naptar.js"></script>
+<script>Calendar.start()</script>
+</head>
+<body ng-controller="calendarCtrl as controller">
+<div class="container">
+<nav class="navbar navbar-default" role="navigation">
+ <ul class="nav nav-tabs" style="padding-left:30%">
+  <li role="presentation" class="active"><a href="/calendar">Naptár</a></li>
+  <li role="presentation"><a href="/profile">Profil</a></li>
+  <li role="presentation"><a href="/project">Adminisztráció</a></li>
+  <li role="presentation"><a href="/logout">Kilépés</a></li>
+  <li role="presentation"><a href="#"><img src="/img/image_normal.jpg"></a></li>
+</ul>
+</div>
+</nav>
+</div>

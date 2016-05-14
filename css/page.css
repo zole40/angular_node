@@ -1,0 +1,175 @@
+
+body{
+    padding: 50px;
+}
+.modal-dialog {
+    width: 200px;
+}
+.modal-footer {
+    height: 70px;
+    margin: 0;
+}
+.modal-footer .btn {
+    font-weight: bold;
+}
+.modal-footer .progress {
+    display: none;
+    height: 32px;
+    margin: 0;
+}
+.input-group-addon {
+    color: #fff;
+    background: #3276B1;
+}
+.modal-body{
+	height: 200px;
+}
+
+.show-buttons{
+	margin: 10px;
+	text-align: center;
+}
+
+.show-buttons > button{
+	padding: 0;
+	margin: -3px;
+	width: 100px;
+}
+
+.projects{
+	width: 100%;
+	margin:0;
+	padding: 0;
+}
+
+select{
+	margin:0;
+	padding: 0;
+}
+
+.col-lg-3 > ul > li {
+border-radius: 5px;
+background-color: grey;
+text-align: center;
+margin: 5px; 
+ list-style-type: none;
+ margin-left: 0;
+}
+
+
+body{
+    background-color: rgb(187, 187, 187);
+}
+iframe.browser-content {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+	
+.top-bar {
+    background: #343434;
+    color: #cdcdcd;
+    text-align: center;
+}
+
+    .top-bar .fa, .top-bar input {
+        line-height: 30px;
+    }
+
+.sidebar {
+    background: #121212;
+    color: #dddddd;
+    text-align: center;
+}
+
+    .sidebar.ng-hide-add {
+        animation: 0.5s fadeOutLeft ease;
+    }
+
+    .sidebar.ng-hide-remove {
+        animation: 0.5s fadeInLeft ease;
+    }
+
+    .sidebar .md-button.fa {
+        line-height: 30px;
+    }
+
+.md-button:not([disabled]):hover {
+  background-color: rgba(107, 103, 91, 0.96);
+  color: white;
+}
+.md-button[disabled] {
+  color : rgb(187, 187, 187);
+  background-color: rgba(230, 230, 229, 0.96);
+}
+
+.inputdemoIcons {
+  /*
+.right-icon {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  left: auto;
+  margin-top: 0;
+}
+*/ }
+  .inputIcons .inputIcon {
+    min-height: 48px;
+  }
+  .inputIcons md-input-container:not(.md-input-invalid) > md-icon.password {
+    color: green; }
+  .inputIcons md-input-container:not(.md-input-invalid) > md-icon.name {
+    color: dodgerblue; }
+  .inputIcons md-input-container.md-input-invalid > md-icon.password,
+  .inputIcons md-input-container.md-input-invalid > md-icon.name {
+    color: red; }
+
+.md-container  .md-button[disabled] {
+  color : rgb(187, 187, 187);
+  background-color: rgba(107, 103, 91, 0.96);
+}
+
+ .md-container .md-button:not([disabled]):hover {
+  background-color: rgba(107, 103, 91, 0.96);
+  color: white;
+}
+
+ .bordered{
+     border: 1px solid grey;
+     border-radius: 5px;
+ }
+
+ .datepicker {
+  /** Demo styles for mdCalendar. */ }
+  .datepicker md-content {
+    padding-bottom: 200px; }
+  .datepicker .validation-messages {
+    font-size: 12px;
+    color: #dd2c00;
+    margin: 10px 0 0 25px; }
+
+.selectcontainer{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	padding: 0;
+	margin-right: 20px;
+}
+
+.selectP{
+	width: 120px;
+}
+option{
+	text-align: center;
+}
+.colorp{
+	border-radius: 10px;
+}
+
+.head{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding: 0;
+	margin: 0;
+}

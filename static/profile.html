@@ -1,0 +1,76 @@
+<!doctype html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/page.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/css/calendar.css">
+</head>
+
+
+
+<body>
+<div class="container">
+<nav class="navbar navbar-default" role="navigation">
+ <ul class="nav nav-tabs" style="padding-left:30%">
+  <li role="presentation" class="active"><a href="calendar">Naptár</a></li>
+  <li role="presentation"><a href="profile">Profil</a></li>
+  <li role="presentation"><a href="project">Adminisztráció</a></li>
+  <li role="presentation"><a href="logout">Kilépés</a></li>
+  <li role="presentation"><a href="#"><img src="/img/image_normal.jpg"></a></li>
+</ul>
+</div>
+</nav>
+</div>
+<div col-lg-3 style="text-align:center;padding-left:450px">
+    <div class="modal-body" style="width:300px">
+        <form role="form">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" id="uLogin" placeholder="Name">
+              <label for="uLogin" class="input-group-addon glyphicon glyphicon-user"></label>
+            </div>
+          </div> <!-- /.form-group -->
+
+          <div class="form-group">
+            <div class="input-group">
+              <input type="password" class="form-control" id="uPassword" placeholder="Password">
+              <label for="uPassword" class="input-group-addon glyphicon glyphicon-lock"></label>
+            </div> <!-- /.input-group -->
+          </div> <!-- /.form-group -->
+
+           <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" id="uAdress" placeholder="Adress">
+              <label for="uAdress" class="input-group-addon glyphicon glyphicon-home"></label>
+            </div> <!-- /.input-group -->
+          </div> <!-- /.form-group -->
+
+           <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" id="uDate" placeholder="Birthdate">
+              <label for="uPDate" class="input-group-addon glyphicon glyphicon-gift"></label>
+            </div> <!-- /.input-group -->
+          </div> <!-- /.form-group -->
+          <button class="btn btn-default">Save</button>
+        </form>
+</div></div>
+      <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+       <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+              <script src="/js/bootstrap.min.js"></script>
+                <script type="text/javascript">
+  $(function(){
+    $( "#uDate" ).datepicker({
+  yearRange: "1950:2016",
+ changeYear:true,
+ changeMonth: true
+ });
+
+    var box = $('.container').children().eq(1);
+    $(".show-buttons").on("click", "button" ,function(event){   
+        box.removeClass();
+        box.addClass( $(this).attr('class')) ;
+        console.log("click " + $(this).attr('class'));
+    });
+  });
+  </script>
+</body>

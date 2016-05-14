@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "newLine": "LF",
+    "experimentalDecorators": true,
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules",
+    "typings/main.d.ts",
+	"typings/main"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}

@@ -1,0 +1,44 @@
+<%- include('header') %>
+<div class="container">
+  <div class="selectcontainer">
+
+      <div class="selector">
+        <select ng-Cloak ng-model="controller.projects.select" class="selectP form-control">
+          <option ng-repeat="option in controller.projects.avaible" value="{{option.id}}">{{option.title}}</option>
+        </select>
+      </div>
+
+      <div class="selector">
+      <color-picker ng-model="controller.color"
+     color-picker-disabled="false"
+    color-picker-format="hsl"
+    color-picker-alpha="true"
+    color-picker-swatch="true"
+    color-picker-swatch-pos="right"
+    color-picker-swatch-only="true"
+    color-picker-pos="'bottom right'"
+    color-picker-case="lower"
+    color-picker-on-change="controller.changeColor()"
+    class="colorp"
+    ></color-picker>
+
+    </div>
+  </div>
+</div>
+<div class="container" >
+<div class="col-lg-3" >
+  <ul ng-Cloak><li ng-repeat="item in controller.tasks">{{item.title}}</li></ul>
+</div>
+
+<div class="col-lg-6">
+ <div id="calendar" ui-calendar="controller.uiConfig.calendar" ng-model="controller.eventSources"></div>
+  </div>
+  <div class="col-lg-3" style="text-align:center">
+  <ul ng-Cloak><li ng-repeat="item in controller.ProjectUsers">{{item}}</li></ul>
+  </div>
+</div>         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   <button ng-click="controller.getclick()">ize </button>
+</div><!-- /.modal -->
+<%- include('footer') %>

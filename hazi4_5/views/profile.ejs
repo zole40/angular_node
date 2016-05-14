@@ -1,0 +1,35 @@
+<%- include('header') %>
+<div col-lg-3 style="text-align:center;padding-left:450px">
+    <div class="modal-body" style="width:300px">
+        <form role="form">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" id="uLogin" placeholder="Name" ng-model="controller.user.name">
+              <label for="uLogin" class="input-group-addon glyphicon glyphicon-user" ></label>
+            </div>
+          </div> <!-- /.form-group -->
+
+          <div class="form-group">
+            <div class="input-group">
+              <input type="password" class="form-control" id="uPassword" placeholder="Password"  ng-model="controller.user.password">
+              <label for="uPassword" class="input-group-addon glyphicon glyphicon-lock"></label>
+            </div> <!-- /.input-group -->
+          </div> <!-- /.form-group -->
+
+           <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" id="uAdress" placeholder="Adress" ng-model="controller.user.address">
+              <label for="uAdress" class="input-group-addon glyphicon glyphicon-home" ></label>
+            </div> <!-- /.input-group -->
+          </div> <!-- /.form-group -->
+
+           <div class="form-group">
+            <div class="input-group">
+              <input type="text" class="form-control" id="uDate" placeholder="email"  ng-model="controller.user.email">
+              <label for="uPDate" class="input-group-addon glyphicon glyphicon-envelope"></label>
+            </div> <!-- /.input-group -->
+          </div> <!-- /.form-group -->
+          <button class="btn btn-default" ng-click="controller.submit()">Save</button>
+        </form>
+</div></div>
+<%- include('footer') %>

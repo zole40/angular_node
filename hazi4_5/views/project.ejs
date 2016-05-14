@@ -1,0 +1,165 @@
+<%- include('header') %>
+<div class="container">
+<div class="head">
+<span  class="btn btn-default" data-toggle = "modal" data-target = "#myModal">Új Projekt</span>
+<span class="btn btn-default" data-toggle = "modal" data-target = "#myModal2">Új Feladat</span>
+<span class="btn btn-default" data-toggle = "modal" data-target = "#myModal3">Felhasználó hozzáadása</span>
+</div>
+  <div class="selectcontainer">
+
+      <div class="selector">
+        <select ng-Cloak ng-model="controller.projects.select" class="selectP form-control">
+          <option ng-repeat="option in controller.projects.avaible" value="{{option.id}}">{{option.title}}</option>
+        </select>
+      </div>
+
+      <div class="selector">
+      <color-picker ng-model="controller.color"
+     color-picker-disabled="false"
+    color-picker-format="rgb"
+    color-picker-alpha="true"
+    color-picker-swatch="true"
+    color-picker-swatch-pos="right"
+    color-picker-swatch-only="true"
+    color-picker-pos="'bottom right'"
+    color-picker-case="lower"
+    class="colorp"
+    ></color-picker>
+
+    </div>
+  </div>
+</div>
+</div>
+<div class="container" >
+<div class="col-lg-3" >
+  <ul ng-Cloak><li ng-repeat="item in controller.tasks">{{item.title}}</li></ul>
+</div>
+
+<div class="col-lg-6">
+ <div id="calendar" ui-calendar="controller.uiConfig.calendar" ng-model="controller.eventSources"></div>
+  </div>
+  <div class="col-lg-3" style="text-align:center">
+  <ul ng-Cloak><li ng-repeat="item in controller.ProjectUsers"  data-toggle = "modal" data-target = "#myModal4">{{item.name}}</li></ul>
+  </div>
+</div>
+<!-- Modal -->
+<div class = "modal fade" id = "myModal" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:400px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+            Új projekt
+            </h4>
+         </div>
+         
+         <div class = "modal-body">
+           <div class="col-lg-12">Projekt Neve: <input type="text" ng-model="controller.project.title"></input></div>
+         </div>            
+            <button type = "button" class = "btn btn-primary" ng-click="controller.addProject()">
+               Submit changes
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   
+</div><!-- /.modal -->
+
+
+<div class = "modal fade" id = "myModal2" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:400px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+            Új Feladat
+            </h4>
+         </div>
+         
+         <div class = "modal-body" style="text-align:center">
+         <div class="col-lg-12">Projekt neve: Test1</div>
+         <div class="col-lg-12">Felhasználó:  <select class="btn btn-default" ng-model="controller.task.user"><option>Felhasználó 1</option></select></div>
+         <div class="col-lg-12">Határidő     <input type="text" id="uDate" ng-model="controller.task.end"></div>
+         <div class="col-lg-12"><input type="checkbox" ng-model="controller.task.ready">Kész</input></div>
+         <div class="col-lg-12">Projekt Leírása: <input type="text" ng-model="controller.task.description"></input></div>
+         </div>            
+            <button type = "button" class = "btn btn-primary" ng-click="controller.addTask()">
+               Submit changes
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   
+</div><!-- /.modal -->
+
+
+<div class = "modal fade" id = "myModal3" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:400px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+            Felhasználó hozzádása
+            </h4>
+         </div>
+         
+         <div class = "modal-body" style="text-align:center">
+         <select class="btn btn-default"><option ng-model="controller.projectUser">Felhasználó 1</option></select>
+         <br><button class="btn btn-default" ng-click="controller.addProjectUser()">Hozzáad</button>
+
+         <br>
+         Felhasználó n
+         </div>            
+            <button type = "button" class = "btn btn-primary" ng-click="controller.sendProjectUsers()">
+               Submit changes
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   <div class = "modal fade" id = "myModal4" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:300px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+Üzenet            </h4>
+         </div>
+         
+         <div class = "modal-body" style="text-align:center">
+         <div class="col-lg-12" style="height:80%">Mév : Üzenet      Dátum</div>
+          <div class="col-lg-12"><input type="text" /></div>
+         </div>            
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   
+</div><!-- /.modal -->
+<%- include('footer') %>

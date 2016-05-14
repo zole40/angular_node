@@ -1,0 +1,23 @@
+module.exports = function (app) {
+
+var bodyParser = require('body-parser');
+var checkprivilege =  require('../middleware/projekt/check_privilege'); 
+var checkLogin = require('../middleware/user/CheckUserLogin');
+var getProject = require('../middleware/projekt/getProject');
+var addProject = require('../middleware/projekt/newProject');
+var addUser = require('../middleware/projekt/addUser');
+var addTask = require('../middleware/projekt/newTask');
+var getProjectUsers = require('../middleware/projekt/getProjectUsers');
+var userModel = require('../models/userModel');
+var projectModel = require('../models/projectModel');
+var taskModel = require('../models/taskModel');
+var objectRepository  = {
+   userModel: userModel,
+   projektModel: projectModel,
+   taskModel: taskModel
+}
+app.post('/addProject',checkLogin(objectRepository),checkprivilege(objectRepository), addProject(objectRepository));
+app.post('/addTask',checkLogin(objectRepository),checkprivilege(objectRepository), addTask(objectRepository));
+app.post('/addUser',checkLogin(objectRepository),checkprivilege(objectRepository), addUser(objectRepository));
+
+};

@@ -1,0 +1,150 @@
+<%- include('header') %>
+<div class="container" style="margin-bottom:20px;width:600px">
+  <div class="col-lg-3" style="text-align:center;width:100px">
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#myModal">Új Projekt</a></div>
+ <div class="col-lg-3"  style="text-align:center;width:100px">
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#myModal2">Új Feladat</a></div>
+ <div class="col-lg-3"  style="text-align:center;width:200px">
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#myModal3">Felhasználó hozzáadása</a></div>
+ <div class="col-lg-3"  style="text-align:center;width:100px"><select class="btn btn-default"><option>Projekt 1</option></select></div>
+</div>
+
+<div class="container">
+<div class="col-lg-3">
+  <ul><li data-toggle = "modal" data-target = "#myModal2">Feladat 1</li>
+  <li  data-toggle = "modal" data-target = "#myModal2">Feladat 2</li></ul>
+</div>
+
+<div class="col-lg-6">
+  <div id="calendar"></div>
+  </div>
+  <div class="col-lg-3" style="text-align:center">
+    <ul><li data-toggle = "modal" data-target = "#myModal4">Béla</li>
+  <li data-toggle = "modal" data-target = "#myModal4">Ferenc</li></ul>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class = "modal fade" id = "myModal" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:400px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+            Új projekt
+            </h4>
+         </div>
+         
+         <div class = "modal-body">
+           <div class="col-lg-12">Projekt Neve: <input type="text"></input></div>
+         </div>            
+            <button type = "button" class = "btn btn-primary">
+               Submit changes
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   
+</div><!-- /.modal -->
+
+
+<div class = "modal fade" id = "myModal2" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:400px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+            Új Feladat
+            </h4>
+         </div>
+         
+         <div class = "modal-body" style="text-align:center">
+         <div class="col-lg-12">Projekt neve: Test1</div>
+         <div class="col-lg-12">Felhasználó:  <select class="btn btn-default"><option>Felhasználó 1</option></select></div>
+         <div class="col-lg-12">Határidő     <input type="text" id="uDate" ></div>
+         <div class="col-lg-12"><input type="checkbox">Kész</input></div>
+         <div class="col-lg-12">Projekt Leírása: <input type="text"></input></div>
+         </div>            
+            <button type = "button" class = "btn btn-primary">
+               Submit changes
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   
+</div><!-- /.modal -->
+
+
+<div class = "modal fade" id = "myModal3" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:400px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+            Felhasználó hozzádása
+            </h4>
+         </div>
+         
+         <div class = "modal-body" style="text-align:center">
+         <select class="btn btn-default"><option>Felhasználó 1</option></select>
+         <br><button class="btn btn-default">Hozzáad</button>
+
+         <br>
+         Felhasználó n
+         </div>            
+            <button type = "button" class = "btn btn-primary">
+               Submit changes
+            </button>
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+   
+</div><!-- /.modal -->
+
+<div class = "modal fade" id = "myModal4" tabindex = "-1" role = "dialog" 
+   aria-labelledby = "myModalLabel" aria-hidden = "true">
+   
+   <div class = "modal-dialog" style="width:300px">
+      <div class = "modal-content">
+         
+         <div class = "modal-header">
+            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
+               ×
+            </button>
+            
+            <h4 class = "modal-title" id = "myModalLabel">
+Üzenet            </h4>
+         </div>
+         
+         <div class = "modal-body" style="text-align:center">
+         <div class="col-lg-12" style="height:80%">Mév : Üzenet      Dátum</div>
+          <div class="col-lg-12"><input type="text" /></div>
+         </div>            
+         </div>
+         
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal-dialog -->
+
+<%- include('footer') %>
