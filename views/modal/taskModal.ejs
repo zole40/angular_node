@@ -16,16 +16,43 @@
          </div>
          
          <div class = "modal-body" style="text-align:center">
-             <div class="col-lg-12">Project: {{controller.selectedTask.project}} </div>
-         <div class="col-lg-12">Feladata neve: <input type="text" ng-model="controller.selectedTask.title" /> </div>
+             <div class="col-lg-12">
+                 Project:
+                 <label>{{controller.projects.avaible[controller.projects.selected].title}}</label>
+         </div>
+         <div class="col-lg-12">
+             Feladata neve: 
+                <input type="text" ng-model="controller.selectedTask.title" ng-if="controller.projectOwner()"/> 
+                <label ng-if="!controller.projectOwner()">{{controller.selectedTask.title}}</label> 
+         </div>
          <div class="col-lg-12" ng-if="controller.selectedTask.user">Felhasználó: {{controller.selectedTask.user}} </div>
-         <div class="col-lg-12">Határidő:  <input type="text" ng-model="controller.selectedTask.start" /></div>
-         <div class="col-lg-12"><input type="checkbox" ng-model="controller.selectedTask.finish">Kész</input></div>
-         <div class="col-lg-12">Feladat Leírása:  <input type="text" ng-model="controller.selectedTask.description" /></div>
+         <div class="col-lg-12">
+             Határidő:  <input type="text" ng-model="controller.selectedTask.start" ng-if="controller.projectOwner()"/>
+                       <label ng-if="!controller.projectOwner()">{{controller.selectedTask.start}}</label> 
+             </div>
+         <div class="col-lg-12"><input type="checkbox" ng-model="controller.selectedTask.finished">Kész</input></div>
+         <div class="col-lg-12">
+             Feladat Leírása: 
+              <input type="text" ng-model="controller.selectedTask.description"  ng-if="controller.projectOwner()"/>
+              <label ng-if="!controller.projectOwner()">{{controller.selectedTask.description}}</label> 
+          </div>
          </div>            
-            <button type = "button" class = "btn btn-primary" ng-click="controller.updateTask()">
+            <button type = "button"
+                    class = "btn btn-primary"
+                    ng-click="controller.updateTask(controller.selectedTask)" 
+                    ng-if="controller.projectOwner()"/>
                Submit changes
             </button>
+            <button type = "button" 
+                    class = "btn btn-primary"
+                    ng-click="controller.removeUser(controller.selectedTask)"
+                    ng-if="controller.selectedTask.user&&controller.taskUser()">
+               Lemond
+            </button>
+            <button type = "button" class = "btn btn-primary" ng-click="controller.addUser(controller.selectedTask)" ng-if="!controller.selectedTask.user">
+               Elvállal
+            </button>
+            
          </div>
          
       </div><!-- /.modal-content -->

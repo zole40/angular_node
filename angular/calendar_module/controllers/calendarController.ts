@@ -5,21 +5,33 @@ module Calendar {
     }
    
     interface User{
-        name : String;
+        name : string;
         color : Color;
         _id : string;
         email: string;
         address : string;
     }
     
-    interface Event{
-        title: string;
-        _id: string;
-        end: Date;
-        color: Color;
-        /**User name */
-        user : string;
-    }
+    /**
+	 * Event
+	 */
+	class Event {
+		title : string;
+		_id : string;
+		start : Date;
+		color : string;
+		/**user name */
+		user : string; 
+		finished: boolean;
+		constructor(title : string , _id : string , start : Date , color : string ,user : string,finished : boolean) {	
+			this.title = title;
+			this._id = _id;
+			this.start = start;
+			this.color = color;
+			this.user = user;
+			this.finished = finished;
+		}
+	} 
     
     interface Project{
         _id : string;
@@ -37,7 +49,7 @@ module Calendar {
     class ProjectList {
        avaible : Array<Project>;
        /**Project _id */
-       selected : string;
+       selected : number;
         constructor() {
             this.avaible = new Array<Project>();     
         }
@@ -47,7 +59,7 @@ module Calendar {
         
         uiConfig: Object;
         alertEventOnClick: Object;
-        alertOnDrop: Object;
+        
         alertOnResize: Object;
         events: Event;
         eventSources: Array<Event>;
@@ -59,26 +71,43 @@ module Calendar {
         project : Project;
         user : User; 
 		adminMenu: boolean;
-        changeColor: () => void;        
+        newTask: boolean;
+		changeColor: () => void;        
         getProject: () => void;
-        getProjectUsers: (string) => void;
-        getTasks: (string) => void;
-        getFreeTasks: (string) => void;
-        getProjectattr: (string) => void;
-        castDate: (Event) => void;
+        getProjectUsers: (_id : string) => void;
+        getTasks: (_id : string) => void;
+        getFreeTasks: (_id : string) => void;
+        getProjectattr: (_id : string) => void;
+        castDate: (task : Event) => void;
         addAdminMenu: () => void;
         removeAdminMenu: () => void; 
         addUserModal: () => void;
-        updateTask: () => void;
-		selectTask: (Event) => void;
+        updateTask: (task : Event) => void;
+		selectTask: (task : Event) => void;
 		updateUser: () => void;
-        constructor(private $scope: ng.IScope,
+        alertOnDrop: (event: Event,delta,revertFunc) => void;
+		eventClick: (event : Event) => void;
+		/**remove user from task */
+		removeUser: (task : Event) => void;
+		addUser: (task : Event) => void;
+		renderCalendar: () => void;
+		taskUser: () => boolean;
+		projectOwner: () => boolean;
+		constructor(private $scope: ng.IScope,
                     private $http: ng.IHttpService,
                     private $window: ng.IWindowService,
                     private $location: ng.ILocationService,
                     private uiCalendarConfig: any
                     )
        {
+		   
+		   /**Rerender calendar */
+		   this.renderCalendar = () => {
+			    let calendar  = <any> angular.element(document.querySelector("#calendar"));
+                calendar.fullCalendar('removeEvents');
+				calendar.fullCalendar('addEventSource',this.eventSources);  
+		   }
+		   
            /**Get user */
        		this.$http.get("/user/getUser").success(
 				   (data : any , status : number) => this.user = data.user		    
@@ -86,6 +115,41 @@ module Calendar {
            /**Init */
            this.eventSources = new Array<Event>();
            this.projects = new ProjectList();  
+		   
+		   			
+			/**Update or create task */
+			this.updateTask = (task : Event) => {
+				let url = "/task/";
+				this.newTask ? url+= "addTask" : url += "modifyTask";
+				this.$http({
+					method: "POST",
+					url : url,
+					data : task,
+					params : {id : this.projects.selected}
+				}).success((data : any , status : number) => {
+					if(status == 204){
+						this.getTasks(this.projects.avaible[this.projects.selected]._id);
+						this.getFreeTasks(this.projects.avaible[this.projects.selected]._id);
+						
+					}
+				})
+			}
+		   
+		   /**Event click */
+		   this.eventClick = (event : Event) => {
+		   		let element = <any> angular.element("#task");
+				let task = new Event(event.title,event._id,event.start,event.color,event.user,event.finished);
+				this.selectTask(task);
+				element.modal("show");
+			}
+			
+			/**Change event date */
+		   	this.alertOnDrop = (event : Event,delta : any,revertFunc : any) => {
+				let task = new Event(event.title,event._id,event.start,event.color,event.user,event.finished);
+				this.updateTask(task);
+		   };
+		   
+		   /**init ui config */
            this.uiConfig = {
                 calendar: {
                     height: 450,
@@ -97,7 +161,7 @@ module Calendar {
                     },
                     dayClick: this.alertEventOnClick,
                     eventDrop: this.alertOnDrop,
-                    eventResize: this.alertOnResize
+                    eventClick: this.eventClick
                 }
             };
             this.ProjectUsers = new Array<string>();
@@ -113,9 +177,10 @@ module Calendar {
                     console.log(status);
                 })
             );
-            
+			
+            /**Show admin menu */
             this.addAdminMenu =  () => this.adminMenu = true;
-            
+            /**Hide admin menu */
             this.removeAdminMenu = () => this.adminMenu = false;
             
             this.addUserModal = () => {
@@ -124,6 +189,7 @@ module Calendar {
                 )    
             }
 			
+			/**Update user profile */
 			this.updateUser = () => {
 				this.$http({
 					method: "POST",
@@ -134,8 +200,7 @@ module Calendar {
 				})
 			}
                 
-            
-               
+			/**Get avaible task */
             this.getFreeTasks = (_id : string) => {
                 this.$http({
                   method : "GET",
@@ -148,7 +213,7 @@ module Calendar {
                 )
             }
             
-               
+			/**Get project users */  
             this.getProjectUsers = (_id : string) => {
                 this.$http({
                   method : "GET",
@@ -159,19 +224,20 @@ module Calendar {
                         this.ProjectUsers = data.users
                     )
                 )
-            }                            
-                this.castDate = function(events : Event) {
-                    var calendar  = <any> angular.element(document.querySelector("#calendar"));
-                    calendar.fullCalendar('removeEvents');
+            }
+			
+			/**Cast to date from json */                            
+            this.castDate = function(events : Event) {
+    
                     for (var i in this.events){
-                        events[i]['_id'] = parseInt(i) + 1;
                         events[i]['start'] = new Date(events[i]['start']);
                         events[i]['end'] = new Date(events[i]['end']);
                     }
                     this.eventSources = events;
-                        calendar.fullCalendar('addEventSource',this.eventSources);
+					this.renderCalendar();
                 }
-               
+            
+			/**Get task */   
             this.getTasks = (_id : string) => {
                 this.$http({
                   method : "GET",
@@ -184,9 +250,7 @@ module Calendar {
                     )
                 )
             }   
-
-     
-                       
+           
             /**Get user, tasks, freetasks */
             this.getProjectattr = (_id : string) => (
                 this.getProjectUsers(_id),
@@ -194,34 +258,62 @@ module Calendar {
                 this.getFreeTasks(_id)
             );
          
-            
             /**Get projects*/
             this.getProject = () => (
                 this.$http.get("/project/getProject")
                 .success(
-                    (data: any,status : number) => (
-                        this.projects.avaible = data.projects,
-                        this.projects.selected = this.projects.avaible[0]._id,
-                        this.getProjectUsers(this.projects.selected),
-                        this.getTasks(this.projects.selected),
-                        this.getFreeTasks(this.projects.selected)
-                    )
+                    (data: any,status : number) => {
+                        this.projects.avaible = data.projects;
+                        this.projects.selected = 0;
+                        this.getProjectUsers(this.projects.avaible[this.projects.selected]._id);
+                        this.getTasks(this.projects.avaible[this.projects.selected]._id);
+                        this.getFreeTasks(this.projects.avaible[this.projects.selected]._id);
+					}
                 )
             );
 			
-			this.selectTask = (task : Event) => {this.selectedTask = task; console.log(task)};
+			/**Select task */
+			this.selectTask = (task : Event) =>{
+				task ? this.newTask = false : this.newTask = true;
+				this.selectedTask = task;
+				console.log(task);
+			} 
 			
-			this.updateTask = () => {
-				this.$http({
+			this.removeUser = (task : Event) => {
+			this.$http({
 					method: "POST",
-					url : "/task/modifyTask",
-					data : this.selectedTask,
-					params : {id : this.projects.selected}
-				}).success(function (data : any , status : number) {
-					console.log(status);
+					url : "/task/removeTaskUser",
+					data : task,
+					params : {id : this.projects.avaible[this.projects.selected]._id}
+				}).success((data : any , status : number) => {
+					if(status == 204){
+						task.user = "";
+						this.tasks.push(task);
+						let  index = this.eventSources.indexOf(task);
+						this.eventSources.splice(index,1);
+						this.renderCalendar();	
+					}
 				})
 			}
 			
+			this.addUser = (task : Event) => {
+			this.$http({
+					method: "POST",
+					url : "/task/addTaskUser",
+					data : task,
+					params : {id : this.projects.avaible[this.projects.selected]._id}
+				}).success((data : any , status : number) => {
+					if(status == 204){
+						task.user = this.user.name;
+						this.eventSources.push(task);
+						let  index = this.tasks.indexOf(task);
+						this.tasks.splice(index,1);
+						this.renderCalendar();
+					}
+				})
+			}
+			this.taskUser = () => this.selectedTask.user === this.user.name;
+			this.projectOwner = () => this.projects.avaible[this.projects.selected].owner === this.user.name;
             this.getProject();
             
             

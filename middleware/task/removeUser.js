@@ -17,7 +17,6 @@
         	/**Ha létezik akkor megvizgálja van-e jogosultságunk módosítani, ha nem akkor http 403-at küld vissza */
           if(next.owner || result.user == req.session.user.name){
           result.user = "";
-          result.color = req.session.user.color;
         	if(result.save(function (err) {
 				  /** Hiba esetén logolja 2-es statusal majd false értékkel visszatér */
   				if (err) {
