@@ -33,9 +33,9 @@
 <div class="container">
 <nav class="navbar navbar-default" role="navigation">
  <ul class="nav nav-tabs" style="padding-left:30%">
-  <li role="presentation" class="active"><a href="/calendar">Naptár</a></li>
-  <li role="presentation"><a href="/profile">Profil</a></li>
-  <li role="presentation"><a href="/project">Adminisztráció</a></li>
+  <li role="presentation"><a href="#" ng-click="controller.removeAdminMenu()">Naptár</a></li>
+  <li role="presentation"><a href="#" data-toggle = "modal" data-target = "#userModal">Profil</a></li>
+  <li role="presentation"><a href="#" ng-click="controller.addAdminMenu()">Adminisztráció</a></li>
   <li role="presentation"><a href="/user/logout">Kilépés</a></li>
   <li role="presentation"><a href="#"><img src="/img/image_normal.jpg"></a></li>
 </ul>

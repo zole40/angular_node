@@ -17,8 +17,5 @@ module.exports = function (app) {
     /**Visszadja a kezdőoldalt (bejelentkező felület) */
     app.get('/', render(objectRepository,'index'));
     /**Bejelentkezett felhasználó esetén visszadja a kért oldalt, egyébként a kezdőoldalra irányít */   
-    app.get('/project',checkLogin(objectRepository), render(objectRepository,'project') );  
-    app.get('/admin', checkLogin(objectRepository), render(objectRepository,'admin')); 
-    app.get('/profile',checkLogin(objectRepository), render(objectRepository,'profile'));
     app.get('/calendar',checkLogin(objectRepository), render(objectRepository,'calendar') );
 };
