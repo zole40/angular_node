@@ -1,59 +1,10 @@
 module Calendar {
+       
+
     
-    interface Color{
-        color : string;
-    }
-   
-    interface User{
-        name : string;
-        color : Color;
-        _id : string;
-        email: string;
-        address : string;
-    }
+
     
-    /**
-	 * Event
-	 */
-	class Event {
-		title : string;
-		_id : string;
-		start : Date;
-		color : string;
-		/**user name */
-		user : string; 
-		finished: boolean;
-		constructor(title : string , _id : string , start : Date , color : string ,user : string,finished : boolean) {	
-			this.title = title;
-			this._id = _id;
-			this.start = start;
-			this.color = color;
-			this.user = user;
-			this.finished = finished;
-		}
-	} 
-    
-    interface Project{
-        _id : string;
-        title: string;
-        /**User name */
-        owner : string;
-        description: string;
-        /**User name */
-        users: Array<string>;
-    }
-    
-    /**
-     * ProjectList
-     */
-    class ProjectList {
-       avaible : Array<Project>;
-       /**Project _id */
-       selected : number;
-        constructor() {
-            this.avaible = new Array<Project>();     
-        }
-    }
+
     
     export class calendarCtrl {
         
@@ -61,7 +12,6 @@ module Calendar {
         alertEventOnClick: Object;
         
         alertOnResize: Object;
-        events: Event;
         eventSources: Array<Event>;
         projects : ProjectList;
         selectedTask : Event;
@@ -78,7 +28,7 @@ module Calendar {
         getTasks: (_id : string) => void;
         getFreeTasks: (_id : string) => void;
         getProjectattr: (_id : string) => void;
-        castDate: (task : Event) => void;
+        castDate: (events : Array<Event>) => void;
         addAdminMenu: () => void;
         removeAdminMenu: () => void; 
         addUserModal: () => void;
@@ -92,7 +42,7 @@ module Calendar {
 		addUser: (task : Event) => void;
 		renderCalendar: () => void;
 		taskUser: () => boolean;
-		projectOwner: () => boolean;
+		projectOwner: boolean;
 		constructor(private $scope: ng.IScope,
                     private $http: ng.IHttpService,
                     private $window: ng.IWindowService,
@@ -117,7 +67,7 @@ module Calendar {
                 });
            /**Init */
            this.eventSources = new Array<Event>();
-           this.projects = new ProjectList();  
+           this.projects = new ProjectList([],0);  
 		   
 		   			
 			/**Update or create task */
@@ -236,17 +186,6 @@ module Calendar {
                    if(status == 401) this.pageService.logout()
                 })
             }
-			
-			/**Cast to date from json */                            
-            this.castDate = function(events : Event) {
-    
-                    for (var i in this.events){
-                        events[i]['start'] = new Date(events[i]['start']);
-                        events[i]['end'] = new Date(events[i]['end']);
-                    }
-                    this.eventSources = events;
-					this.renderCalendar();
-                }
             
 			/**Get task */   
             this.getTasks = (_id : string) => {
@@ -256,9 +195,8 @@ module Calendar {
                   params: {id : _id}  
                 }).success(
                     (data : any, status : number) =>{
-                        this.events = data.events,
-                        this.castDate(this.events)
-
+                        this.eventSources = data.events;
+                        this.renderCalendar();
                 }).error((data : any, status : number) => {
                    if(status == 401) this.pageService.logout()
                 })
@@ -293,7 +231,7 @@ module Calendar {
 			this.selectTask = (task : Event) =>{
 				task ? this.newTask = false : this.newTask = true;
 				this.selectedTask = task;
-				console.log(task);
+				console.log(this.selectedTask);
 			} 
 			
 			this.removeUser = (task : Event) => {

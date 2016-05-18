@@ -1,28 +1,5 @@
 var Calendar;
 (function (Calendar) {
-    /**
-     * Event
-     */
-    var Event = (function () {
-        function Event(title, _id, start, color, user, finished) {
-            this.title = title;
-            this._id = _id;
-            this.start = start;
-            this.color = color;
-            this.user = user;
-            this.finished = finished;
-        }
-        return Event;
-    }());
-    /**
-     * ProjectList
-     */
-    var ProjectList = (function () {
-        function ProjectList() {
-            this.avaible = new Array();
-        }
-        return ProjectList;
-    }());
     var calendarCtrl = (function () {
         function calendarCtrl($scope, $http, $window, $location, uiCalendarConfig, pageService) {
             var _this = this;
@@ -45,7 +22,7 @@ var Calendar;
             });
             /**Init */
             this.eventSources = new Array();
-            this.projects = new ProjectList();
+            this.projects = new Calendar.ProjectList([], 0);
             /**Update or create task */
             this.updateTask = function (task) {
                 var url = "/task/";
@@ -69,13 +46,13 @@ var Calendar;
             /**Event click */
             this.eventClick = function (event) {
                 var element = angular.element("#task");
-                var task = new Event(event.title, event._id, event.start, event.color, event.user, event.finished);
+                var task = new Calendar.Event(event.title, event._id, event.start, event.color, event.user, event.finished);
                 _this.selectTask(task);
                 element.modal("show");
             };
             /**Change event date */
             this.alertOnDrop = function (event, delta, revertFunc) {
-                var task = new Event(event.title, event._id, event.start, event.color, event.user, event.finished);
+                var task = new Calendar.Event(event.title, event._id, event.start, event.color, event.user, event.finished);
                 _this.updateTask(task);
             };
             /**init ui config */
@@ -152,15 +129,6 @@ var Calendar;
                         _this.pageService.logout();
                 });
             };
-            /**Cast to date from json */
-            this.castDate = function (events) {
-                for (var i in this.events) {
-                    events[i]['start'] = new Date(events[i]['start']);
-                    events[i]['end'] = new Date(events[i]['end']);
-                }
-                this.eventSources = events;
-                this.renderCalendar();
-            };
             /**Get task */
             this.getTasks = function (_id) {
                 _this.$http({
@@ -168,8 +136,8 @@ var Calendar;
                     url: "task/getTasks",
                     params: { id: _id }
                 }).success(function (data, status) {
-                    _this.events = data.events,
-                        _this.castDate(_this.events);
+                    _this.eventSources = data.events;
+                    _this.renderCalendar();
                 }).error(function (data, status) {
                     if (status == 401)
                         _this.pageService.logout();
@@ -195,7 +163,7 @@ var Calendar;
             this.selectTask = function (task) {
                 task ? _this.newTask = false : _this.newTask = true;
                 _this.selectedTask = task;
-                console.log(task);
+                console.log(_this.selectedTask);
             };
             this.removeUser = function (task) {
                 _this.$http({

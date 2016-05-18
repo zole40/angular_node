@@ -18,38 +18,38 @@
          <div class = "modal-body" style="text-align:center">
              <div class="col-lg-12">
                  Project:
-                 <label>{{controller.projects.avaible[controller.projects.selected].title}}</label>
+                 <label>{{calendar.projects.avaible[calendar.projects.selected].title}}</label>
          </div>
          <div class="col-lg-12">
              Feladata neve: 
-                <input type="text" ng-model="controller.selectedTask.title" ng-if="controller.projectOwner()"/> 
-                <label ng-if="!controller.projectOwner()">{{controller.selectedTask.title}}</label> 
+                <input type="text" ng-model="calendar.selectedTask.title" ng-if="calendar.projectOwner"/> 
+                <label ng-if="!calendar.projectOwner">{{calender.selectedTask.title}}</label> 
          </div>
-         <div class="col-lg-12" ng-if="controller.selectedTask.user">Felhasználó: {{controller.selectedTask.user}} </div>
+         <div class="col-lg-12" ng-if="calendar.selectedTask.user">Felhasználó: {{calendar.selectedTask.user}} </div>
          <div class="col-lg-12">
-             Határidő:  <input type="text" ng-model="controller.selectedTask.start" ng-if="controller.projectOwner()"/>
-                       <label ng-if="!controller.projectOwner()">{{controller.selectedTask.start}}</label> 
+             Határidő:  <input type="text" ng-model="calendar.selectedTask.start" ng-if="calendar.projectOwner()"/>
+                       <label ng-if="!calendar.projectOwner()">{{calendar.selectedTask.start}}</label> 
              </div>
-         <div class="col-lg-12"><input type="checkbox" ng-model="controller.selectedTask.finished">Kész</input></div>
+         <div class="col-lg-12"><input type="checkbox" ng-model="calendar.selectedTask.finished">Kész</input></div>
          <div class="col-lg-12">
              Feladat Leírása: 
-              <input type="text" ng-model="controller.selectedTask.description"  ng-if="controller.projectOwner()"/>
-              <label ng-if="!controller.projectOwner()">{{controller.selectedTask.description}}</label> 
+              <input type="text" ng-model="calendar.selectedTask.description"  ng-if="calendar.projectOwner()"/>
+              <label ng-if="!calendar.projectOwner()">{{calendar.selectedTask.description}}</label> 
           </div>
          </div>            
             <button type = "button"
                     class = "btn btn-primary"
-                    ng-click="controller.updateTask(controller.selectedTask)" 
-                    ng-if="controller.projectOwner()"/>
+                    ng-click="calendar.updateTask(calendar.selectedTask)" 
+                    ng-if="calendar.projectOwner()"/>
                Submit changes
             </button>
             <button type = "button" 
                     class = "btn btn-primary"
-                    ng-click="controller.removeUser(controller.selectedTask)"
-                    ng-if="controller.selectedTask.user&&controller.taskUser()">
+                    ng-click="calendar.removeUser(calendar.selectedTask)"
+                    ng-if="calendar.selectedTask.user&&calendar.taskUser()">
                Lemond
             </button>
-            <button type = "button" class = "btn btn-primary" ng-click="controller.addUser(controller.selectedTask)" ng-if="!controller.selectedTask.user">
+            <button type = "button" class = "btn btn-primary" ng-click="calendar.addUser(calendar.selectedTask)" ng-if="!calendar.selectedTask.user">
                Elvállal
             </button>
             
