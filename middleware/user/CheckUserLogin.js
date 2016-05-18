@@ -4,7 +4,7 @@ module.exports = function (objectrepository) {
     	/**Megvizsgálj hogy van-e session.secret */
 		if (typeof req.session.secret === "undefined") {
 		/**Ha nincs akkor átirányír a kezdőoldalra */
-      	return res.redirect('/');
+      	return res.status(401).send();
     	} else {
 		/**Ha van akkor tovább adja a vezérlést a következő middleware-nek */
       	return next();

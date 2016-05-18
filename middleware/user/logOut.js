@@ -6,7 +6,7 @@
 		/**Törli a sessiont majd átirányít a kezdőoldalra */
     	req.session.destroy(function() {
       		res.clearCookie('connect.sid');
-      		res.redirect('/');
+      		res.status(200).send();
     	/**destroy vége */
 		});
 	/**function vége */

@@ -15,7 +15,7 @@
 			onSubmit: function(hsb, hex, rgb) {
 				$('#colorSelector2 div').css('backgroundColor', '#' + hex);
 			}
-		});
+		})
 		$('#colorpickerHolder2>div').css('position', 'absolute');
 		var widt = false;
 		$('#colorSelector2').bind('click', function() {

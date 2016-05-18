@@ -23,7 +23,7 @@ module.exports = function (app,logger) {
 	}
 	
 	/**Kijelentkezés: Megvizsgálja, hogy be van-e jelentkezve ha igen akkor kijelentkezteti */
-	app.get('/user/logOut', checkLogin(objectRepository,logger),logOut(logger));
+	app.post('/user/logOut', checkLogin(objectRepository,logger),logOut(logger));
 	/**Bejelentkezés */
 	app.post('/user/login', login(objectRepository,logger));
 	/**Regisztráció: Regisztrálja a felhasználót és ha ez sikerült akkor be is lépteti */

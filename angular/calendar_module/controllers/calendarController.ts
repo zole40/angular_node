@@ -97,7 +97,8 @@ module Calendar {
                     private $http: ng.IHttpService,
                     private $window: ng.IWindowService,
                     private $location: ng.ILocationService,
-                    private uiCalendarConfig: any
+                    private uiCalendarConfig: any,
+                    private pageService : pageService
                     )
        {
 		   
@@ -111,7 +112,9 @@ module Calendar {
            /**Get user */
        		this.$http.get("/user/getUser").success(
 				   (data : any , status : number) => this.user = data.user		    
-           	);
+           	).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
+                });
            /**Init */
            this.eventSources = new Array<Event>();
            this.projects = new ProjectList();  
@@ -125,14 +128,17 @@ module Calendar {
 					method: "POST",
 					url : url,
 					data : task,
-					params : {id : this.projects.selected}
+					params : {id : this.projects.avaible[this.projects.selected]._id}
 				}).success((data : any , status : number) => {
+                    console.log(status);
 					if(status == 204){
 						this.getTasks(this.projects.avaible[this.projects.selected]._id);
 						this.getFreeTasks(this.projects.avaible[this.projects.selected]._id);
 						
 					}
-				})
+				}).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
+                })
 			}
 		   
 		   /**Event click */
@@ -173,8 +179,8 @@ module Calendar {
                    method : "POST",
                    url : "/user/changeColor",
                    data : { color : this.user.color }  
-                }).success(function(data,status){
-                    console.log(status);
+                }).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
                 })
             );
 			
@@ -185,8 +191,11 @@ module Calendar {
             
             this.addUserModal = () => {
                 this.$http.get("/profile").success(
-                    (data : any , status : number) => angular.element("#userModalBody").html(data)
-                )    
+                    (data : any , status : number) => {
+                    angular.element("#userModalBody").html(data)
+                    }).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
+                })  
             }
 			
 			/**Update user profile */
@@ -195,9 +204,9 @@ module Calendar {
 					method: "POST",
 					url: "/user/modifyUser",
 					data : this.user
-				}).success(function(data : any, status : number){
-					console.log(status);
-				})
+				}).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
+                })
 			}
                 
 			/**Get avaible task */
@@ -207,10 +216,11 @@ module Calendar {
                   url : "task/getFreeTask",
                   params: {id : _id}  
                 }).success(
-                    (data : any, status : number) =>(
-                        this.tasks = data.events
-                    )
-                )
+                    (data : any, status : number) =>{
+                       this.tasks = data.events
+                    }).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
+                })
             }
             
 			/**Get project users */  
@@ -220,10 +230,11 @@ module Calendar {
                   url : "project/getProjectUsers",
                   params: {id : _id}  
                 }).success(
-                    (data : any, status : number) =>(
+                    (data : any, status : number) =>{
                         this.ProjectUsers = data.users
-                    )
-                )
+                    }).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
+                })
             }
 			
 			/**Cast to date from json */                            
@@ -244,11 +255,13 @@ module Calendar {
                   url : "task/getTasks",
                   params: {id : _id}  
                 }).success(
-                    (data : any, status : number) =>(
+                    (data : any, status : number) =>{
                         this.events = data.events,
                         this.castDate(this.events)
-                    )
-                )
+
+                }).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
+                })
             }   
            
             /**Get user, tasks, freetasks */
@@ -263,13 +276,17 @@ module Calendar {
                 this.$http.get("/project/getProject")
                 .success(
                     (data: any,status : number) => {
+
                         this.projects.avaible = data.projects;
                         this.projects.selected = 0;
                         this.getProjectUsers(this.projects.avaible[this.projects.selected]._id);
                         this.getTasks(this.projects.avaible[this.projects.selected]._id);
                         this.getFreeTasks(this.projects.avaible[this.projects.selected]._id);
+
 					}
-                )
+                ).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
+                })
             );
 			
 			/**Select task */
@@ -293,7 +310,9 @@ module Calendar {
 						this.eventSources.splice(index,1);
 						this.renderCalendar();	
 					}
-				})
+				}).error((data : any, status : number) => {
+                   if(status == 401) this.pageService.logout()
+                })
 			}
 			
 			this.addUser = (task : Event) => {
@@ -310,10 +329,12 @@ module Calendar {
 						this.tasks.splice(index,1);
 						this.renderCalendar();
 					}
-				})
+				}).error((data : any, status : number) => {
+                    if(status == 401) this.pageService.logout()
+                })
 			}
 			this.taskUser = () => this.selectedTask.user === this.user.name;
-			this.projectOwner = () => this.projects.avaible[this.projects.selected].owner === this.user.name;
+			//this.projectOwner = () => this.projects.avaible[this.projects.selected].owner === this.user.name;
             this.getProject();
             
             

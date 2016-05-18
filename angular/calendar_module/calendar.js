@@ -8,8 +8,11 @@ var Calendar;
     }());
     Calendar.CalendarApp = CalendarApp;
     function start() {
-        Calendar.calendar = new CalendarApp(angular.module("calendar", ['ui.calendar', 'ngMaterial', 'color.picker'])
-            .controller("calendarCtrl", Calendar.calendarCtrl));
+        Calendar.calendar = new CalendarApp(angular.module("calendar", ["ui.calendar", "ngMaterial", "color.picker"])
+            .controller("calendarCtrl", Calendar.calendarCtrl)
+            .controller("loginCtrl", Calendar.loginCtrl)
+            .controller("pageCtrl", Calendar.pageCtrl)
+            .service("pageService", Calendar.pageService));
     }
     Calendar.start = start;
 })(Calendar || (Calendar = {}));

@@ -24,13 +24,14 @@ var Calendar;
         return ProjectList;
     }());
     var calendarCtrl = (function () {
-        function calendarCtrl($scope, $http, $window, $location, uiCalendarConfig) {
+        function calendarCtrl($scope, $http, $window, $location, uiCalendarConfig, pageService) {
             var _this = this;
             this.$scope = $scope;
             this.$http = $http;
             this.$window = $window;
             this.$location = $location;
             this.uiCalendarConfig = uiCalendarConfig;
+            this.pageService = pageService;
             /**Rerender calendar */
             this.renderCalendar = function () {
                 var calendar = angular.element(document.querySelector("#calendar"));
@@ -38,7 +39,10 @@ var Calendar;
                 calendar.fullCalendar('addEventSource', _this.eventSources);
             };
             /**Get user */
-            this.$http.get("/user/getUser").success(function (data, status) { return _this.user = data.user; });
+            this.$http.get("/user/getUser").success(function (data, status) { return _this.user = data.user; }).error(function (data, status) {
+                if (status == 401)
+                    _this.pageService.logout();
+            });
             /**Init */
             this.eventSources = new Array();
             this.projects = new ProjectList();
@@ -50,12 +54,16 @@ var Calendar;
                     method: "POST",
                     url: url,
                     data: task,
-                    params: { id: _this.projects.selected }
+                    params: { id: _this.projects.avaible[_this.projects.selected]._id }
                 }).success(function (data, status) {
+                    console.log(status);
                     if (status == 204) {
                         _this.getTasks(_this.projects.avaible[_this.projects.selected]._id);
                         _this.getFreeTasks(_this.projects.avaible[_this.projects.selected]._id);
                     }
+                }).error(function (data, status) {
+                    if (status == 401)
+                        _this.pageService.logout();
                 });
             };
             /**Event click */
@@ -91,15 +99,21 @@ var Calendar;
                 method: "POST",
                 url: "/user/changeColor",
                 data: { color: _this.user.color }
-            }).success(function (data, status) {
-                console.log(status);
+            }).error(function (data, status) {
+                if (status == 401)
+                    _this.pageService.logout();
             })); };
             /**Show admin menu */
             this.addAdminMenu = function () { return _this.adminMenu = true; };
             /**Hide admin menu */
             this.removeAdminMenu = function () { return _this.adminMenu = false; };
             this.addUserModal = function () {
-                _this.$http.get("/profile").success(function (data, status) { return angular.element("#userModalBody").html(data); });
+                _this.$http.get("/profile").success(function (data, status) {
+                    angular.element("#userModalBody").html(data);
+                }).error(function (data, status) {
+                    if (status == 401)
+                        _this.pageService.logout();
+                });
             };
             /**Update user profile */
             this.updateUser = function () {
@@ -107,8 +121,9 @@ var Calendar;
                     method: "POST",
                     url: "/user/modifyUser",
                     data: _this.user
-                }).success(function (data, status) {
-                    console.log(status);
+                }).error(function (data, status) {
+                    if (status == 401)
+                        _this.pageService.logout();
                 });
             };
             /**Get avaible task */
@@ -117,7 +132,12 @@ var Calendar;
                     method: "GET",
                     url: "task/getFreeTask",
                     params: { id: _id }
-                }).success(function (data, status) { return (_this.tasks = data.events); });
+                }).success(function (data, status) {
+                    _this.tasks = data.events;
+                }).error(function (data, status) {
+                    if (status == 401)
+                        _this.pageService.logout();
+                });
             };
             /**Get project users */
             this.getProjectUsers = function (_id) {
@@ -125,7 +145,12 @@ var Calendar;
                     method: "GET",
                     url: "project/getProjectUsers",
                     params: { id: _id }
-                }).success(function (data, status) { return (_this.ProjectUsers = data.users); });
+                }).success(function (data, status) {
+                    _this.ProjectUsers = data.users;
+                }).error(function (data, status) {
+                    if (status == 401)
+                        _this.pageService.logout();
+                });
             };
             /**Cast to date from json */
             this.castDate = function (events) {
@@ -142,8 +167,13 @@ var Calendar;
                     method: "GET",
                     url: "task/getTasks",
                     params: { id: _id }
-                }).success(function (data, status) { return (_this.events = data.events,
-                    _this.castDate(_this.events)); });
+                }).success(function (data, status) {
+                    _this.events = data.events,
+                        _this.castDate(_this.events);
+                }).error(function (data, status) {
+                    if (status == 401)
+                        _this.pageService.logout();
+                });
             };
             /**Get user, tasks, freetasks */
             this.getProjectattr = function (_id) { return (_this.getProjectUsers(_id),
@@ -157,6 +187,9 @@ var Calendar;
                 _this.getProjectUsers(_this.projects.avaible[_this.projects.selected]._id);
                 _this.getTasks(_this.projects.avaible[_this.projects.selected]._id);
                 _this.getFreeTasks(_this.projects.avaible[_this.projects.selected]._id);
+            }).error(function (data, status) {
+                if (status == 401)
+                    _this.pageService.logout();
             })); };
             /**Select task */
             this.selectTask = function (task) {
@@ -178,6 +211,9 @@ var Calendar;
                         _this.eventSources.splice(index, 1);
                         _this.renderCalendar();
                     }
+                }).error(function (data, status) {
+                    if (status == 401)
+                        _this.pageService.logout();
                 });
             };
             this.addUser = function (task) {
@@ -194,10 +230,13 @@ var Calendar;
                         _this.tasks.splice(index, 1);
                         _this.renderCalendar();
                     }
+                }).error(function (data, status) {
+                    if (status == 401)
+                        _this.pageService.logout();
                 });
             };
             this.taskUser = function () { return _this.selectedTask.user === _this.user.name; };
-            this.projectOwner = function () { return _this.projects.avaible[_this.projects.selected].owner === _this.user.name; };
+            //this.projectOwner = () => this.projects.avaible[this.projects.selected].owner === this.user.name;
             this.getProject();
         }
         return calendarCtrl;
