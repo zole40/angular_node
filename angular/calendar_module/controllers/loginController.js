@@ -28,10 +28,11 @@ var Calendar;
             this.$http.post(url, this.user).success(function (data, status) {
                 console.log(status);
                 if (status === 200) {
-                    _this.pageService.login();
+                    console.log(data);
+                    _this.pageService.login(data.user);
                 }
                 else if (status === 401) {
-                    _this.pageService.login();
+                    _this.pageService.logout();
                 }
             });
         };

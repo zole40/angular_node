@@ -30,7 +30,7 @@ module.exports = function(objectRepository,logger){
      		req.session.user = result;
 	 		/**Logolja 4-es status kóddal, hogy a fehaszáló bejelentkezett majd http 200-at küld vissza (az angular miatt szükséges ez) */
      		logger(4,result.name + " has logged on");
-      		return res.sendStatus(200);
+      		return res.status(200).send({user : req.session.user});
     	/**userModel.find() vége */
 		});
 	 /**function vége */	

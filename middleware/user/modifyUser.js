@@ -32,6 +32,7 @@
 						/**Ha sikerült hozzáadni az adatbázishoz akkor logolja 4-es status kóddal és true értkékkel visszatér */
   				} else {
 					logger(4,req.body.name + " updated");
+					req.session.user = result;
 					return true;
   				}
 			})){

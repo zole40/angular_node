@@ -2,21 +2,20 @@
 <div class="container">
 <nav class="navbar navbar-default" role="navigation">
  <ul class="nav nav-tabs" style="padding-left:30%">
-  <li role="presentation"><a href="#" ng-click="calendar.removeAdminMenu()">Naptár</a></li>
-  <li role="presentation"><a href="#" data-toggle = "modal" data-target = "#userModal">Profil</a></li>
-  <li role="presentation"><a href="#" ng-click="calendar.addAdminMenu()">Adminisztráció</a></li>
+  <li role="presentation"><a href="#" ng-click="calendar.adminMenu=!calendar.adminMenu">Adminisztráció</a></li>
+  <li role="presentation"><a href="#" ng-bind="calendar.user.name" data-toggle = "modal" data-target = "#userModal"></a></li>
   <li role="presentation"><a href="#" ng-click="page.logout()">Kilépés</a></li>
-  <li role="presentation"><a href="#"><img src="/img/image_normal.jpg"></a></li>
 </ul>
 </div>
 </nav>
+<%- include('project') %>
 
 <div class="container">
   <div class="selectcontainer">
 
       <div class="selector">
-        <select ng-Cloak ng-model="calendar.projects.select" class="selectP form-control">
-          <option ng-repeat="option in calendar.projects.avaible" value="{{option.id}}">{{option.title}}</option>
+        <select ng-Cloak ng-model="calendar.projects.id" class="selectP form-control" ng-change="calendar.changeProject()">
+          <option ng-repeat="option in calendar.projects.avaible" value="{{option._id}}">{{option.title}}</option>
         </select>
       </div>
 
@@ -39,16 +38,16 @@
 </div>
 <div class="container" >
 <div class="col-lg-3" >
-  <ul ng-Cloak><li ng-repeat="item in calendar.tasks"  data-toggle = "modal" data-target = "#task" ng-click="calendar.selectTask(item)">{{item.title}}</li></ul>
+  <ul ng-Cloak><li ng-repeat="item in calendar.taskList.tasks"  data-toggle = "modal" data-target = "#task" ng-click="calendar.selectTask(item)">{{item.title}}</li></ul>
 </div>
 
 <div class="col-lg-6">
- <div id="calendar" ui-calendar="calendar.uiConfig.calendar" ng-model="calendar.eventSources"></div>
+ <div id="calendar" ui-calendar="calendar.uiConfig.calendar" ng-model="calendar.taskList.eventSources"></div>
   </div>
   <div class="col-lg-3" style="text-align:center">
-  <ul ng-Cloak><li ng-repeat="item in calendar.ProjectUsers">{{item}}</li></ul>
+  <ul ng-Cloak><li ng-repeat="item in calendar.getProjectUsers()">{{item}}</li></ul>
   </div>
-</div>         
-<%- include('modal/userModal') %>
-<%- include('modal/taskModal') %>
+</div>      
+<%- include('modal/taskModal') %>  
+<%- include('modal/userModal') %>  
       </div><!-- /.modal-content -->

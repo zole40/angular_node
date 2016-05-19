@@ -10,6 +10,6 @@ module Calendar {
             .controller("calendarCtrl", calendarCtrl)
             .controller("loginCtrl",loginCtrl)
             .controller("pageCtrl",pageCtrl)
-            .service("pageService",pageService));
+            .service("pageService",pageService))
     }
 } 

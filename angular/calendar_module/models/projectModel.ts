@@ -7,6 +7,5 @@ module Calendar{
                     public description : string){
                         users = new Array<string>();
                     }
-
     }
 }

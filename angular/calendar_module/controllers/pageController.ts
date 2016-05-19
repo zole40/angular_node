@@ -12,7 +12,10 @@ module Calendar{
                    (data: any , status : number) => {
 											if(status == 200) this.pageService.logout(); console.log(status);
 										}
-							 )}    
-    	} 
+							 )}
+           this.$http.get("/user/getUser")
+           		.success( (data : any) => this.pageService.login(data.user) ) 
+    			.error( () => this.pageService.logout() )	
+		} 
     }
 }

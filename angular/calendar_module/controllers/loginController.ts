@@ -40,10 +40,11 @@ module Calendar {
                 (data: any, status : Number) => {
                     console.log(status);
                     if(status === 200){  
-                        this.pageService.login();    
+                        console.log(data);
+                        this.pageService.login(data.user);    
                     }
                     else if(status === 401){
-                        this.pageService.login();
+                        this.pageService.logout();
                     }
                 }
             );

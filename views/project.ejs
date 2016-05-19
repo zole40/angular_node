@@ -1,12 +1,12 @@
-<div class="container" style="margin-bottom:20px;width:600px" ng-if="controller.adminMenu">
+<div class="container" style="margin-bottom:20px;width:600px" ng-if="calendar.adminMenu">
   <div class="col-lg-4" style="text-align:center;width:100px">
 <a  class="btn btn-default" data-toggle = "modal" data-target = "#project">Új Projekt</a></div>
  <div class="col-lg-4"  style="text-align:center;width:100px">
-<a  class="btn btn-default" data-toggle = "modal" data-target = "#task" ng-click="controller.selectTask()">Új Feladat</a></div>
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#task" ng-click="calendar.selectTask()" ng-if="calendar.projects.owner">Új Feladat</a></div>
  <div class="col-lg-4"  style="text-align:center;width:200px">
-<a  class="btn btn-default" data-toggle = "modal" data-target = "#add_user">Felhasználó hozzáadása</a></div>
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#add_user" ng-if="calendar.projects.owner">Felhasználó hozzáadása</a></div>
  <div class="col-lg-4"  style="text-align:center;width:100px">
-<a  class="btn btn-default" data-toggle = "modal" data-target = "#project">Módostás</a></div>
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#project"  ng-if="calendar.projects.owner">Módostás</a></div>
 </div>
 <%- include('modal/projectModal') %>
-<%- include('modal/addUserModal') %>
+<%- include('modal/addUserModal') %>   

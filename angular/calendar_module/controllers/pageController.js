@@ -14,6 +14,9 @@ var Calendar;
                     console.log(status);
                 });
             };
+            this.$http.get("/user/getUser")
+                .success(function (data) { return _this.pageService.login(data.user); })
+                .error(function () { return _this.pageService.logout(); });
         }
         pageCtrl.$inject = ['$scope', 'pageService', '$http'];
         return pageCtrl;
