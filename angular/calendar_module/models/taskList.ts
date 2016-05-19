@@ -68,14 +68,24 @@ module Calendar{
                     this.taskUser = (userName : string) => this.selectedTask.user === userName;
                     
                     this.selectTask = (task : Event) => {
-                        task ? this.newTask = false : this.newTask = true;
-				        this.selectedTask = task;
+                        task ? 
+                            this.newTask = false : this.newTask = true;
+                        this.newTask ? 
+                            this.selectedTask = new Event(this.$http) : this.selectedTask = task;
                     };
                     
                 this.updateTask = (task : Event,id :string) => {
 				    let url = "/task/";
 				    this.newTask ? url+= "addTask" : url += "modifyTask";
-                    return task.update(id,url);
+                    return task.update(id,url)
+                    .success((data : any , status : number) =>
+                    {
+                        if(status === 201) {
+                            let event = new Event(this.$http);
+                            event.set(data.task);
+                            this.tasks.push(event);
+                        }
+                    });
                 }
     }
     }

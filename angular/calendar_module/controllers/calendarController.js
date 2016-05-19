@@ -8,6 +8,27 @@ var Calendar;
             this.$http = $http;
             this.uiCalendarConfig = uiCalendarConfig;
             this.pageService = pageService;
+            this.updateProject = function () {
+                return _this.projects.updateProject()
+                    .success(function (data, status) {
+                    if (status === 201) {
+                        _this.getTasks(_this.projects.id);
+                        _this.getFreeTasks(_this.projects.id);
+                        _this.projects.changeProject(_this.user.name);
+                        _this.uiConfig["calendar"].editable = _this.projects.owner;
+                    }
+                    var element = angular.element("#project");
+                    element.modal("hide");
+                })
+                    .error(function (data, status) {
+                    if (status == 401) {
+                        _this.pageService.logout();
+                    }
+                });
+            };
+            this.selectProject = function (newProject) {
+                return _this.projects.selectProject(newProject);
+            };
             this.taskList = new Calendar.taskList(this.$http, new Array(), new Array(), null);
             this.changeProject = function () {
                 _this.projects.changeProject(_this.user.name);
@@ -38,6 +59,8 @@ var Calendar;
             this.updateTask = function (task) {
                 return _this.taskList.updateTask(task, _this.projects.id)
                     .success(function () {
+                    var element = angular.element("#task");
+                    element.modal("hide");
                     _this.taskList.getTasks(_this.projects.id)
                         .success(function () {
                         return _this.renderCalendar();
@@ -121,8 +144,6 @@ var Calendar;
             this.getProject = function () {
                 return _this.projects.getProject()
                     .success(function (data, status) {
-                    _this.projects.avaible = data.projects;
-                    _this.projects.id = _this.projects.avaible[_this.projects.selected]._id;
                     _this.getTasks(_this.projects.id);
                     _this.getFreeTasks(_this.projects.id);
                     _this.projects.changeProject(_this.user.name);

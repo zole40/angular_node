@@ -27,7 +27,7 @@
 						return false;
 						/**Ha sikerült hozzáadni az adatbázishoz akkor logolja 4-es status kóddal és true értkékkel visszatér */
   				} else {
-					logger(4,"Task ("+ req.query.id + " updated");
+					logger(4,"Task ("+ req.body._id + " updated");
 					return true;
   				}
 			})){

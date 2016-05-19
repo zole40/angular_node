@@ -11,6 +11,7 @@ module Calendar {
         getTasks: (_id : string) => void;
         getFreeTasks: (_id : string) => void;
         updateTask: (task : Event) => void;
+		updateProject: () => void;
 		selectTask: (task : Event, index? : number) => void;
         alertOnDrop: (event: Event,delta,revertFunc) => void;
 		eventClick: (event : Event) => void;
@@ -23,6 +24,7 @@ module Calendar {
 		changeProject: () => void;
 		updateUser: () => void;
 		taskList : taskList;
+		selectProject: (newProject : boolean) => void;
 		//static $inject = ['$scope','$http','uiCalendarConfig','pageService']
 		constructor(private $scope: ng.IScope,
                     private $http: ng.IHttpService,
@@ -30,6 +32,28 @@ module Calendar {
                     private pageService : pageService
                     )
        {
+		   	this.updateProject = () => 
+		   		this.projects.updateProject()
+				   .success((data : any , status : number) =>
+				   {
+					   	if(status === 201) {
+							this.getTasks(  this.projects.id);
+                        	this.getFreeTasks(  this.projects.id);
+							this.projects.changeProject(this.user.name);
+							this.uiConfig["calendar"].editable = this.projects.owner;
+					   	}
+					   	let element = <any> angular.element("#project");
+						element.modal("hide");
+				   })
+				   	.error((data : any, status : number) => 
+					{
+                   		if(status == 401) { 
+					   		this.pageService.logout()
+				   		}
+                	})
+		   
+		   this.selectProject = (newProject : boolean) =>
+		  		this.projects.selectProject(newProject);
 		   this.taskList = new taskList(this.$http,new Array<Event>(),new Array<Event>(),null);
 		   this.changeProject = () => 
 		   {
@@ -65,6 +89,8 @@ module Calendar {
 				this.taskList.updateTask(task,this.projects.id)
 					.success(() => 
 					{
+						let element = <any> angular.element("#task");
+						element.modal("hide");
 						this.taskList.getTasks(this.projects.id)
 							.success(() => 
 								this.renderCalendar())	
@@ -162,8 +188,6 @@ module Calendar {
 				this.projects.getProject()
                 	.success((data: any,status : number) => 
 					{
-                        this.projects.avaible = data.projects;
-						this.projects.id = this.projects.avaible[  this.projects.selected]._id; 
                         this.getTasks(  this.projects.id);
                         this.getFreeTasks(  this.projects.id);
 						this.projects.changeProject(this.user.name);

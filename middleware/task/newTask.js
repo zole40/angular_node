@@ -13,7 +13,7 @@
                 user: "",
                 finished: req.body.finished
              });
-             newTask.save(function (err) {
+             newTask.save(function (err,result) {
 	    	    /** Hiba esetén logolja 2-es status kóddal majd http 500-as küld vissza */
   	    		if (err) {
 	    		    logger(2,err);
@@ -22,7 +22,7 @@
                /**Ha sikerült hozzáadni az adatbázishoz akkor logolja 4-es status kóddal és http 201-et küld vissza */ 
                 else {
 		    	    logger(4,req.body.title + " created in project("+req.query.id+")");	
-                    return res.status(201).send(req.body.title + "created");
+                    return res.status(201).send({task : result});
   			    }
             });
         }

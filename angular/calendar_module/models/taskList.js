@@ -61,13 +61,22 @@ var Calendar;
             };
             this.taskUser = function (userName) { return _this.selectedTask.user === userName; };
             this.selectTask = function (task) {
-                task ? _this.newTask = false : _this.newTask = true;
-                _this.selectedTask = task;
+                task ?
+                    _this.newTask = false : _this.newTask = true;
+                _this.newTask ?
+                    _this.selectedTask = new Calendar.Event(_this.$http) : _this.selectedTask = task;
             };
             this.updateTask = function (task, id) {
                 var url = "/task/";
                 _this.newTask ? url += "addTask" : url += "modifyTask";
-                return task.update(id, url);
+                return task.update(id, url)
+                    .success(function (data, status) {
+                    if (status === 201) {
+                        var event_1 = new Calendar.Event(_this.$http);
+                        event_1.set(data.task);
+                        _this.tasks.push(event_1);
+                    }
+                });
             };
         }
         return taskList;

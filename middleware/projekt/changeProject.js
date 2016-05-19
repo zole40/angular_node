@@ -16,7 +16,7 @@
         	}
         	/**Ha létezik akkor megvizgálja van-e jogosultságunk módosítani, ha nem akkor http 403-at küld vissza */
         	if(result.owner != req.session.user.name){
-				logger(1,req.session.user.name + "Access denied to project" + result.id);
+				logger(1,req.session.user.name + "Access denied to project" + result._id);
           		return res.status(403).send("Access denied");
         	}
           result.title = req.body.project.title;
