@@ -10,21 +10,28 @@ module Calendar {
 		changeColor: () => void;        
         getTasks: (_id : string) => void;
         getFreeTasks: (_id : string) => void;
-        updateTask: (task : Event) => void;
+		getFinishedTask: (_id : string) => void;
+        updateTask: () => void;
 		updateProject: () => void;
-		selectTask: (task : Event, index? : number) => void;
+		selectTask: (task : Event) => void;
         alertOnDrop: (event: Event,delta,revertFunc) => void;
 		eventClick: (event : Event) => void;
 		/**remove user from task */
-		removeUser: (task : Event) => void;
-		addUser: (task : Event) => void;
+		removeUser: () => void;
+		addUser: () => void;
 		renderCalendar: () => void;
 		taskUser: () => boolean;
+		finishTask: () => void;
 		getProject: () => void;
 		changeProject: () => void;
 		updateUser: () => void;
 		taskList : taskList;
+		getEvents: () => void;
+		allUser: Array<User>
 		selectProject: (newProject : boolean) => void;
+		getAllUser: () => void;
+		deleteProject: () => void;
+		userName: string;
 		//static $inject = ['$scope','$http','uiCalendarConfig','pageService']
 		constructor(private $scope: ng.IScope,
                     private $http: ng.IHttpService,
@@ -32,15 +39,42 @@ module Calendar {
                     private pageService : pageService
                     )
        {
+		   this.getAllUser = () => 
+		   		this.$http({
+					   method : "GET",
+					   url : "/user/getAll",
+					 	params : {id : this.projects.id}   
+				   }).success((data : any) => 
+						this.allUser = data.users);
+						
+		   this.finishTask = () => 
+		   		this.taskList.finish(this.projects.id)
+				   .success( () => 
+				   {
+				   		this.renderCalendar();
+				   })
+		   this.getEvents = () =>
+		   {
+			   	this.getTasks(  this.projects.id);
+               	this.getFreeTasks(  this.projects.id);
+				this.getFinishedTask(this.projects.id);
+				this.projects.change(this.user.name);
+				
+				this.uiConfig["calendar"].editable = this.projects.owner;
+		   }
+		   this.deleteProject = () => this.projects.delete()
+		   .success((data : any ,status : number) =>
+		   {
+			   	let element = <any> angular.element("#project");
+				element.modal("hide");
+			   	this.getEvents();
+		   })
 		   	this.updateProject = () => 
-		   		this.projects.updateProject()
+		   		this.projects.update()
 				   .success((data : any , status : number) =>
 				   {
 					   	if(status === 201) {
-							this.getTasks(  this.projects.id);
-                        	this.getFreeTasks(  this.projects.id);
-							this.projects.changeProject(this.user.name);
-							this.uiConfig["calendar"].editable = this.projects.owner;
+							   this.getEvents();
 					   	}
 					   	let element = <any> angular.element("#project");
 						element.modal("hide");
@@ -53,11 +87,11 @@ module Calendar {
                 	})
 		   
 		   this.selectProject = (newProject : boolean) =>
-		  		this.projects.selectProject(newProject);
-		   this.taskList = new taskList(this.$http,new Array<Event>(),new Array<Event>(),null);
+		  		this.projects.select(newProject);
+		   this.taskList = new taskList(this.$http,new Array<Event>(),new Array<Event>(),new Array<Event>(),new Event(this.$http));
 		   this.changeProject = () => 
 		   {
-			   this.projects.changeProject(this.user.name);
+			   this.projects.change(this.user.name);
 			   this.getProject();
 		   }
 		   this.projects = new ProjectList(this.$http,[],0,"0");
@@ -82,11 +116,11 @@ module Calendar {
 		   {
 			    let calendar  = <any> angular.element(document.querySelector("#calendar"));
                 calendar.fullCalendar('removeEvents');
-				calendar.fullCalendar('addEventSource',this.taskList.eventSources);  
+				calendar.fullCalendar('addEventSource',this.taskList.eventSources);
 		   }		   			
 			/**Update or create task */
-			this.updateTask = (task : Event) =>
-				this.taskList.updateTask(task,this.projects.id)
+			this.updateTask = () =>
+				this.taskList.updateTask(this.projects.id)
 					.success(() => 
 					{
 						let element = <any> angular.element("#task");
@@ -117,7 +151,8 @@ module Calendar {
 			{
 				let task = new Event(this.$http);
 				task.set(event);
-				this.updateTask(task);
+				this.selectTask(task);
+				this.updateTask();
 		   	};
 		   
 		   /**init ui config */
@@ -180,18 +215,26 @@ module Calendar {
                   		 if(status == 401) {
 							    this.pageService.logout()
 						   }	
-					})
+					});
+					
+						/**Get task */   
+            this.getFinishedTask = (_id : string) => 
+				this.taskList.getFinished(_id)
+					.error((data : any, status : number) => 
+					{
+                  		 if(status == 401) {
+							    this.pageService.logout()
+						   }	
+					});
+            
             
          
             /**Get projects*/
             this.getProject = () => 
-				this.projects.getProject()
+				this.projects.get()
                 	.success((data: any,status : number) => 
 					{
-                        this.getTasks(  this.projects.id);
-                        this.getFreeTasks(  this.projects.id);
-						this.projects.changeProject(this.user.name);
-						this.uiConfig["calendar"].editable = this.projects.owner;
+                    	this.getEvents();
 					}
                 ).error((data : any, status : number) => 
 				{
@@ -204,8 +247,8 @@ module Calendar {
 			this.selectTask = (task : Event) => 
 				this.taskList.selectTask(task)
 			
-			this.removeUser = (task : Event) => 
-				this.taskList.removeUser(task,this.projects.id)
+			this.removeUser = () => 
+				this.taskList.removeUser(this.projects.id)
 					.success(() => this.renderCalendar())
 					.error((data : any, status : number) => {
                    		if(status == 401){
@@ -213,8 +256,8 @@ module Calendar {
 					  	 }
                 	});
 			
-			this.addUser = (task : Event) => 
-				this.taskList.addUser(task,this.projects.id,this.user)
+			this.addUser = () => 
+				this.taskList.addUser(this.projects.id,this.user)
 					.success(() => this.renderCalendar())
 					.error((data : any, status : number) => {
                     	if(status == 401){
@@ -227,6 +270,5 @@ module Calendar {
 
             this.getProject(); 
         }
-        
     }
 }; 

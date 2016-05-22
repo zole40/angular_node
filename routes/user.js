@@ -13,6 +13,7 @@ module.exports = function (app,logger) {
 	var logOut = require('../middleware/user/logOut');
 	var changeColor = require('../middleware/user/changeColor');
 	var getUser = require('../middleware/user/getUser');
+	var getAll = require('../middleware/user/getAll');
 	/**Megjelenítés */
 	var render = require('../middleware/generic/render');
 		
@@ -32,4 +33,5 @@ module.exports = function (app,logger) {
 	app.post('/user/modifyUser',checkLogin(objectRepository,logger),modifyUser(objectRepository,logger));
 	app.post('/user/changeColor',checkLogin(objectRepository,logger),changeColor(objectRepository,logger));
 	app.get('/user/getUser',checkLogin(objectRepository,logger),getUser());
+	app.get('/user/getAll',checkLogin(objectRepository,logger),getAll(objectRepository,logger));
 };

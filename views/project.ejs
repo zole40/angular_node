@@ -2,11 +2,11 @@
   <div class="col-lg-4" style="text-align:center;width:100px">
 <a  class="btn btn-default" data-toggle = "modal" data-target = "#project" ng-click="calendar.selectProject(true)">Új Projekt</a></div>
  <div class="col-lg-4"  style="text-align:center;width:100px">
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#project" ng-click="calendar.selectProject(false)">Részletek</a></div>
+ <div class="col-lg-4"  style="text-align:center;width:100px">
 <a  class="btn btn-default" data-toggle = "modal" data-target = "#task" ng-click="calendar.selectTask()" ng-if="calendar.projects.owner">Új Feladat</a></div>
  <div class="col-lg-4"  style="text-align:center;width:200px">
-<a  class="btn btn-default" data-toggle = "modal" data-target = "#add_user" ng-if="calendar.projects.owner">Felhasználó hozzáadása</a></div>
- <div class="col-lg-4"  style="text-align:center;width:100px">
-<a  class="btn btn-default" data-toggle = "modal" data-target = "#project" ng-click="calendar.selectProject(false)">Részletek</a></div>
+<a  class="btn btn-default" data-toggle = "modal" data-target = "#add_user" ng-click="calendar.getAllUser()" ng-if="calendar.projects.owner">Felhasználó hozzáadása</a></div>
 <%- include('modal/projectModal') %>
 <%- include('modal/addUserModal') %>   
 </div>

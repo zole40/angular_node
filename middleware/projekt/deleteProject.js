@@ -31,7 +31,7 @@
   				}
 			})){
 				/**Ha sikerült a törlés akkor http 204-et küld vissza */
-          		return res.status(204).send("Updated");
+          		return res.status(204).send();
         	}
 			/**Ha nem sikerült akkor http 500-at küld vissza */
         	else{

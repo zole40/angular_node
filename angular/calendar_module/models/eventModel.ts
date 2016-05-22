@@ -3,6 +3,7 @@ module Calendar{
         addUser: (id : string) => ng.IHttpPromise<Event>;
         removeUser: (id : string) => ng.IHttpPromise<Event>;
         update: (id: string, url : string) => ng.IHttpPromise<Event>;
+        finish: (id: string) => ng.IHttpPromise<Event>;
         set: (task : Event) => void;
         title : string;
         _id : string;
@@ -41,8 +42,13 @@ module Calendar{
 					data : this,
 					params : {id : id}
 			});
+            this.finish = (id : string) =>
+                this.$http({
+                    method : "POST",
+                    url : "/task/finish",
+                    data : {task : this},
+                    params : {id : id}
+                })
         }
-                   
-
     }
 } 

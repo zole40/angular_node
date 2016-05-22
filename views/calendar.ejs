@@ -12,7 +12,6 @@
 
 <div class="container">
   <div class="selectcontainer">
-
       <div class="selector">
         <select ng-Cloak ng-model="calendar.projects.id" class="selectP form-control" ng-change="calendar.changeProject()">
           <option ng-repeat="option in calendar.projects.avaible" value="{{option._id}}">{{option.title}}</option>
@@ -37,15 +36,28 @@
   </div>
 </div>
 <div class="container" >
-<div class="col-lg-3" >
-  <ul ng-Cloak><li ng-repeat="item in calendar.taskList.tasks"  data-toggle = "modal" data-target = "#task" ng-click="calendar.selectTask(item)">{{item.title}}</li></ul>
+  <div class="col-lg-3">
+<div class="col-lg-12" >
+  <ul ng-Cloak>
+    <h2> Elérhető</h2>
+    <li ng-repeat="item in calendar.taskList.tasks"  data-toggle = "modal" data-target = "#task" ng-click="calendar.selectTask(item)">{{item.title}}</li>
+    </ul>
 </div>
-
+<div class="col-lg-12" >
+  <ul ng-Cloak>
+    <h2>Kész </h2>
+    <li ng-repeat="item in calendar.taskList.finished"  data-toggle = "modal" data-target = "#task" ng-click="calendar.selectTask(item)">{{item.title}}</li>
+    </ul>
+</div>
+</div>
 <div class="col-lg-6">
  <div id="calendar" ui-calendar="calendar.uiConfig.calendar" ng-model="calendar.taskList.eventSources"></div>
   </div>
-  <div class="col-lg-3" style="text-align:center">
-  <ul ng-Cloak><li ng-repeat="item in calendar.getProjectUsers()">{{item}}</li></ul>
+  <div class="col-lg-3">
+    <h2>Felhasználók</h2>
+  <div class="col-lg-12" style="text-align:center">
+  <ul ng-Cloak><li ng-repeat="item in calendar.projects.avaible[calendar.projects.selected].users">{{item}}</li></ul>
+  </div>
   </div>
 </div>      
 <%- include('modal/taskModal') %>  

@@ -3,7 +3,7 @@
  	return function (req, res, next) {
         var result = [];
      for(i in next.tasks){
-       if(next.tasks[i].user !== ""){
+       if(next.tasks[i].user !== "" && !next.tasks[i].finished){
          result.push(next.tasks[i]);
        }
      }

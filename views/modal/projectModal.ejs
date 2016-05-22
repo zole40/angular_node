@@ -18,19 +18,19 @@
          <div class = "modal-body">
            <div class="col-lg-12">
              Projekt Neve: 
-              <input type="text" ng-if="calendar.projects.owner || calendar.projects.newProject" ng-model="calendar.projects.selectedProject.title"> </input>
-              <label ng-bind="calendar.projects.selectedProject.title" ng-if="!calendar.projects.owner && !calendar.projects.newProject" />
+              <input type="text" ng-if="calendar.projects.owner || calendar.projects.newP" ng-model="calendar.projects.selectedP.title"> </input>
+              <label ng-bind="calendar.projects.selectedP.title" ng-if="!calendar.projects.owner && !calendar.projects.newP" />
            </div>
            <div class="col-lg-12">
              Leírás: 
-             <input type="textfield" ng-if="calendar.projects.owner || calendar.projects.newProject" ng-model="calendar.projects.selectedProject.description"></input>
-             <label ng-bind="calendar.projects.selectedProject.description" ng-if="!calendar.projects.owner && !calendar.projects.newProject" />
+             <input type="textfield" ng-if="calendar.projects.owner || calendar.projects.newP" ng-model="calendar.projects.selectedP.description"></input>
+             <label ng-bind="calendar.projects.selectedP.description" ng-if="!calendar.projects.owner && !calendar.projects.newP" />
           </div> 
          </div>            
-            <button type = "button" class = "btn btn-primary" ng-if="calendar.projects.owner || calendar.projects.newProject" ng-click="calendar.updateProject()">
+            <button type = "button" class = "btn btn-primary" ng-if="calendar.projects.owner || calendar.projects.newP" ng-click="calendar.updateProject()">
                Submit changes
             </button>
-             <button type = "button" class = "btn btn-primary" ng-if="calendar.projects.owner || calendar.projects.newProject" ng-click="calendar.deleteProject()">
+             <button type = "button" class = "btn btn-primary" ng-if="calendar.projects.owner && !calendar.projects.newP" ng-click="calendar.deleteProject()">
                Delete
             </button>
          </div>

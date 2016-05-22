@@ -2,15 +2,18 @@ module Calendar{
     export class taskList{
         getFreeTasks: (id : string) => ng.IHttpPromise<Event>;
         getTasks: (id : string) => ng.IHttpPromise<Event>;
-        removeUser: (task : Event,id : string) => ng.IHttpPromise<Event>;
-        addUser: (task : Event,id : string,user : User) => ng.IHttpPromise<Event>;
+        getFinished: (id : string) => ng.IHttpPromise<Event>;
+        removeUser: (id : string) => ng.IHttpPromise<Event>;
+        addUser: (id : string,user : User) => ng.IHttpPromise<Event>;
         taskUser: (userName : string) => boolean;
         newTask: boolean;
-        updateTask: (task : Event,od : string) => ng.IHttpPromise<Event>; 
+        updateTask: ( id : string) => ng.IHttpPromise<Event>; 
         selectTask: (task : Event) => void;
+        finish: ( id : string) => ng.IHttpPromise<Event>;
    		constructor(private $http : ng.IHttpService,
                     public eventSources : Array<Event>,
                     public tasks : Array<Event>,
+                    public finished : Array<Event>,
                     public selectedTask: Event){                        
                 this.getFreeTasks = (id : string) => this.$http({
                     method : "GET",
@@ -38,30 +41,44 @@ module Calendar{
 							this.eventSources.push(task);
 						})
                 });
+                
+                this.getFinished = (_id : string) => this.$http({
+                    method : "GET",
+                    url : "task/getFinished",
+                    params: {id : _id}  
+                }).success(
+                    (data : any, status : number) =>{
+						this.finished = [];
+						data.events.forEach((element : Event) =>{
+							let task = new Event(this.$http);
+							task.set(element);
+							this.finished.push(task);
+						})
+                });
 
-                this.removeUser = (task : Event,id : string) =>
-                    task.removeUser(id)
+                this.removeUser = (id : string) =>
+                    this.selectedTask.removeUser(id)
 			            .success((data : any , status : number) => {
 					        if(status == 204){
                                 let index : number;
                                 this.eventSources.forEach((element : Event) =>{
-                                    if(element._id === task._id) 
+                                    if(element._id === this.selectedTask._id) 
                     		            index =  this.eventSources.indexOf(element) 
                     	        });
-						        task.user = "";
+						        this.selectedTask.user = "";
 						        this.eventSources[index].user = "";
 				                this.tasks.push(this.eventSources[index]);
 						        this.eventSources.splice(index,1);	
 					        }
 				    });
-                this.addUser = (task : Event , id : string,user : User) => 
-                    task.addUser(id)
+                this.addUser = ( id : string,user : User) => 
+                    this.selectedTask.addUser(id)
 					    .success((data : any , status : number) => {
 					        if(status == 204){
-						        task.user = user.name;
-						        task.color = user.color;
-						        this.eventSources.push(task);
-						        let  index = this.tasks.indexOf(task);
+						        this.selectedTask.user = user.name;
+						        this.selectedTask.color = user.color;
+						        this.eventSources.push(this.selectedTask);
+						        let  index = this.tasks.indexOf(this.selectedTask);
 						        this.tasks.splice(index,1);
 					        }
 				    });
@@ -74,10 +91,10 @@ module Calendar{
                             this.selectedTask = new Event(this.$http) : this.selectedTask = task;
                     };
                     
-                this.updateTask = (task : Event,id :string) => {
+                this.updateTask = (id :string) => {
 				    let url = "/task/";
 				    this.newTask ? url+= "addTask" : url += "modifyTask";
-                    return task.update(id,url)
+                    return this.selectedTask.update(id,url)
                     .success((data : any , status : number) =>
                     {
                         if(status === 201) {
@@ -87,6 +104,30 @@ module Calendar{
                         }
                     });
                 }
+                this.finish = (id : string) => 
+                   this.selectedTask.finish(id)
+                    .success( () => {
+                        if(this.selectedTask.finished){
+                             let index : number;
+
+                                this.eventSources.forEach((element : Event) =>{
+                                    if(element._id === this.selectedTask._id) 
+                    		            index =  this.eventSources.indexOf(element) 
+                    	        });
+				                this.finished.push(this.eventSources[index]);
+						        this.eventSources.splice(index,1);	
+                    }
+                    else{
+                             let index : number;
+                                this.finished.forEach((element : Event) =>{
+                                    if(element._id === this.selectedTask._id) 
+                    		            index =  this.finished.indexOf(element) 
+                    	        });
+				                this.eventSources.push(this.finished[index]);
+						        this.finished.splice(index,1);
+                    }
+                    } )
+       
     }
     }
 };

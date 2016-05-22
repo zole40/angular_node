@@ -1,20 +1,21 @@
 module Calendar{
     export class ProjectList{
-        addProjects: (project : Project) => ng.IHttpPromise<Project>;
-        removeProject: (project : Project) => ng.IHttpPromise<Project>;
-        getProject: () => ng.IHttpPromise<Project>;
-        getProjectUsers: () => Array<string>;
-        selectedProject : Project;
-        changeProject: (userName :string) => void;
-        updateProject: () => ng.IHttpPromise<Project>;
-        selectProject: (newProject : boolean) => void;
+        add: (project : Project) => ng.IHttpPromise<Project>;
+        remove: (project : Project) => ng.IHttpPromise<Project>;
+        get: () => ng.IHttpPromise<Project>;
+        getUsers: () => Array<string>;
+        selectedP : Project;
+        delete: () => ng.IHttpPromise<Project>;
+        change: (userName :string) => void;
+        update: () => ng.IHttpPromise<Project>;
+        select: (newProject : boolean) => void;
         owner: boolean;
-        newProject: boolean;
+        newP: boolean ;
    		constructor(private $http : ng.IHttpService,
                     public avaible : Array<Project>,
                     public selected : number,
                     public id: string){
-             this.getProject = () => this.$http.get("/project/getProject")
+             this.get = () => this.$http.get("/project/getProject")
                 .success((data : any , status : number) =>
                 {
                     this.avaible = [];
@@ -26,8 +27,8 @@ module Calendar{
                     })
 					this.id = this.avaible[  this.selected]._id; 
                 }); 
-       		 this.getProjectUsers = () => this.avaible[this.selected] ? this.avaible[this.selected].users : undefined
-             this.changeProject = (userName : string) => {
+       		 this.getUsers = () => this.avaible[this.selected] ? this.avaible[this.selected].users : undefined
+             this.change = (userName : string) => {
                  for (let i in this.avaible) {
                     if(this.avaible[i]._id === this.id){
                         this.selected = this.avaible.indexOf(this.avaible[i]);
@@ -37,17 +38,17 @@ module Calendar{
                    this.owner = userName === this.avaible[this.selected].owner              
                }  
             };
-            this.selectProject = ( newProject : boolean) =>{
-                this.newProject = newProject;
-                this.newProject ? 
-                    this.selectedProject = new Project(this.$http) : this.selectedProject = this.avaible[this.selected];
+            this.select = ( newProject : boolean) =>{
+                this.newP = newProject;
+                this.newP ? 
+                    this.selectedP = new Project(this.$http) : this.selectedP = this.avaible[this.selected];
             }
-            this.updateProject = () => 
+            this.update = () => 
             {
                 let url = "/project/";
-                this.newProject ?
+                this.newP ?
                     url += "addProject" : url += "modifyProject";
-               return this.selectedProject.update(url)
+               return this.selectedP.update(url)
                 .success((data : any , status : number) =>
                 {
                     if(status == 201) {
@@ -59,6 +60,25 @@ module Calendar{
                     }
                 });
             }
-    }
-}
-};
+                this.delete = () =>
+                 this.$http({
+                     method : "POST",
+                     url: "/project/deleteProject",
+                     data: {},
+                     params : {id : this.selectedP._id}
+                 }).success( (data : any, status : number) => {
+                     this.avaible.splice(this.avaible.indexOf(this.selectedP,1));
+                     if(this.avaible.length){
+                        if(this.selected > this.avaible.length - 1){
+                            this.selected -= 1;     
+                        }
+                        this.id = this.avaible[this.selected]._id;
+                    }
+                    else{
+                        this.selected = 0;
+                        this.id = "";
+                    }
+                 });   
+                }
+            }
+    };

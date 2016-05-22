@@ -4,8 +4,8 @@ module.exports = function(objectRepository,logger){
 	    var projektModel = objectRepository.projektModel;
         /**Létrehoz egy propjektet a megadott paraméterekkel és a létrehozó felhasználóval */
 		var projekt = new projektModel({
-        	title: req.body.title,
-            description: req.body.description,
+        	title: req.body.project.title,
+            description: req.body.project.description,
             owner: req.session.user.name
         });
 		/**A hozzadás sikeressségét vizsgálja */

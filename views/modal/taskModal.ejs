@@ -30,7 +30,11 @@
              Határidő:  <input type="text" ng-model="calendar.taskList.selectedTask.start" ng-if="calendar.projects.owner"/>
                        <label ng-if="!calendar.projects.owner">{{calendar.taskList.selectedTask.start}}</label> 
              </div>
-         <div class="col-lg-12"><input type="checkbox" ng-model="calendar.taskList.selectedTask.finished">Kész</input></div>
+         <div class="col-lg-12">
+             <input type="checkbox"
+                    ng-model="calendar.taskList.selectedTask.finished" 
+                    ng-click="calendar.finishTask()" 
+                    ng-disabled="!calendar.taskList.selectedTask.user || (!calendar.projects.owner && !calendar.taskUser())">Kész</input></div>
          <div class="col-lg-12">
              Feladat Leírása: 
               <input type="text" ng-model="calendar.taskList.selectedTask.description"  ng-if="calendar.projects.owner"/>
@@ -46,10 +50,13 @@
             <button type = "button" 
                     class = "btn btn-primary"
                     ng-click="calendar.removeUser(calendar.taskList.selectedTask)"
-                    ng-if="calendar.taskList.selectedTask.user && ( calendar.taskUser()  || calendar.projects.owner )">
+                    ng-if="calendar.taskList.selectedTask.user && ( calendar.taskUser()  || calendar.projects.owner ) && !calendar.taskList.selectedTask.finished">
                Lemond
             </button>
-            <button type = "button" class = "btn btn-primary" ng-click="calendar.addUser(calendar.taskList.selectedTask)" ng-if="!calendar.taskList.selectedTask.user">
+            <button type = "button" 
+                    class = "btn btn-primary" 
+                    ng-click="calendar.addUser(calendar.taskList.selectedTask)" 
+                    ng-if="!calendar.taskList.selectedTask.user && !calendar.taskList.newTask">
                Elvállal
             </button>
             

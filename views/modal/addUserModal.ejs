@@ -15,7 +15,11 @@
          </div>
          
          <div class = "modal-body" style="text-align:center">
-         <select class="btn btn-default"><option>Felhasználó 1</option></select>
+          <div class="selector">
+        <select ng-Cloak ng-model="calendar.userName" class="selectP form-control" ng-change="">
+          <option ng-repeat="option in calendar.allUser" value="{{option.name}}">{{option.name}}</option>
+        </select>
+      </div>
          <br><button class="btn btn-default">Hozzáad</button>
 
          <br>

@@ -33,6 +33,14 @@ var Calendar;
                     params: { id: id }
                 });
             };
+            this.finish = function (id) {
+                return _this.$http({
+                    method: "POST",
+                    url: "/task/finish",
+                    data: { task: _this },
+                    params: { id: id }
+                });
+            };
         }
         return Event;
     }());
