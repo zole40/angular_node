@@ -32,7 +32,7 @@
         }
         /**Ha nem akkor logolja 1-es status kóddal és http 401-es küld vissza */
         else{
-            logger(1,req,session.user.name + " acces denied to project(" +req.query.id +")");
+            logger(1,req.session.user.name + " acces denied to project(" +req.query.id +")");
             return res.status(401).send({error: 'Hozzáférés megtagadva!'});
         }
     };
