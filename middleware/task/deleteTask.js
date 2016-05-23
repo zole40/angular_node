@@ -13,8 +13,8 @@
         		}
         		/**Ha nem létezik  a kívánt project akkor logolja 1-es status kóddal és http 404 küld vissza */
         		else if ((!result)) {
-					logger(1,"A task (" + req.body.id + ') nem létezik');
-          			return res.status(404).send({error: 'A task nem létezik'});
+					logger(1,"A project (" + req.query.id + ') nem létezik');
+          			return res.status(404).send({error: 'A project nem létezik'});
         		}  
             	result.remove(function (err) {
 	    	    	/** Hiba esetén logolja 2-es status kóddal majd http 500-as küld vissza */
