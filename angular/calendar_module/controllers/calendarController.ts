@@ -186,7 +186,6 @@ module Calendar {
 						
 		   this.finishTask = () => 
 		   {
-			   if(this.taskList.selectedTask.user){
 		   		this.taskList.finish(this.projects.id)
 				   .success( () => 
 				   {
@@ -197,7 +196,6 @@ module Calendar {
 					   		this.pageService.logout()
 				   		}
                 	});
-		   }
 		   }
 		   this.getEvents = () =>
 		   {

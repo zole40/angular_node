@@ -7,6 +7,7 @@ module Calendar{
         description : string;
         set: (project : Project) => void;
         update: (url : string) => ng.IHttpPromise<Project>;
+        static $inject = ["$http"];
         constructor(private $http : ng.IHttpService){
             this.set = (project : Project) =>
             {

@@ -1,8 +1,8 @@
 module Calendar {
     export class CalendarApp {
+        static $inject = ["angularModule"];
         constructor(public angularModule: ng.IModule) { }
-    }
-
+    } 
     export var calendar: CalendarApp;
 
     export function start() {

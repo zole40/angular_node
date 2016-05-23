@@ -26,5 +26,13 @@
     "moment": "^2.13.0",
     "mongoose": "^4.4.13",
     "socket.io": "^1.4.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.13.4",
+    "gulp-uglify": "^1.5.3",
+    "gulp-watch": "^4.3.6"
   }
 }

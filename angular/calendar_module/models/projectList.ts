@@ -11,6 +11,7 @@ module Calendar{
         select: (newProject : boolean) => void;
         owner: boolean;
         newP: boolean ;
+        static $inject = ["$http","avaible","selected","id"];
    		constructor(private $http : ng.IHttpService,
                     public avaible : Array<Project>,
                     public selected : number,

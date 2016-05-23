@@ -11,6 +11,7 @@ module Calendar{
         updateTask: ( id : string) => ng.IHttpPromise<Event>; 
         selectTask: (task : Event) => void;
         finish: ( id : string) => ng.IHttpPromise<Event>;
+        static $inject = ["$http","eventSources","tasks","finished","selectedTask"];
    		constructor(private $http : ng.IHttpService,
                     public eventSources : Array<Event>,
                     public tasks : Array<Event>,

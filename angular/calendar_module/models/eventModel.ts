@@ -13,6 +13,7 @@ module Calendar{
         user : string;
         finished : boolean;
         description : string;
+        static $inject = ["$http"];
 		constructor(private $http : ng.IHttpService) {
             
             this.delete = (id : string) => 

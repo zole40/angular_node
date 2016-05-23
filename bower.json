@@ -22,7 +22,8 @@
     "moment": "~2.10.3",
     "angular-bootstrap-calendar": "^0.19.6",
     "angular-color-picker": "angularjs-color-picker#^1.0.5",
-    "angular-material": "^1.0.9"
+    "angular-material": "^1.0.9",
+    "angular-ui-calendar": "^1.0.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.x",

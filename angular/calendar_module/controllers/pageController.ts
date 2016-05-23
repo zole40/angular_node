@@ -2,9 +2,10 @@ module Calendar{
     
     export class pageCtrl{
         
-        static $inject = ['$scope','pageService','$http'];
+        
         isAuthorized: () => boolean;
         logout: () => void;
+        static $inject = ['$scope','pageService','$http'];
         constructor(private $scope: ng.IScope,private pageService : pageService,private $http: ng.IHttpService){
            this.isAuthorized = this.pageService.isAuthorized;
            this.logout = () => {

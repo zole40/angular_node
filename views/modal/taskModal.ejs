@@ -33,7 +33,7 @@
            			</md-input-container>
 					<md-checkbox ng-model="calendar.taskList.selectedTask.finished" 
 					 			 aria-label="Kész"
-								 ng-click="calendar.finishTask()"
+								 ng-change="calendar.finishTask()"
 								 ng-disabled="!calendar.taskList.selectedTask.user || (!calendar.projects.owner && !calendar.taskUser())">
             			Kész
           			</md-checkbox>
