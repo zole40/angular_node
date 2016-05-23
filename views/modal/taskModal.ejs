@@ -1,66 +1,85 @@
-<!--Form for create or modify task -->
-<div class = "modal fade" id = "task" tabindex = "-1" role = "dialog" 
-   aria-labelledby = "myModalLabel" aria-hidden = "true">
-   
-   <div class = "modal-dialog" style="width:400px">
-      <div class = "modal-content">
-         
-         <div class = "modal-header">
-            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
-               ×
-            </button>
-            
-            <h4 class = "modal-title" id = "myModalLabel">
-            Új Feladat
-            </h4>
-         </div>
-         
-         <div class = "modal-body" style="text-align:center">
-             <div class="col-lg-12">
-                 Project:
-                 <label>{{calendar.projects.avaible[calendar.projects.selected].title}}</label>
-         </div>
-         <div class="col-lg-12">
-             Feladata neve: 
-                <input type="text" ng-model="calendar.taskList.selectedTask.title" ng-if="calendar.projects.owner"/> 
-                <label ng-if="!calendar.projects.owner">{{calendar.taskList.selectedTask.title}}</label> 
-         </div>
-         <div class="col-lg-12" ng-if="calendar.taskList.selectedTask.user">Felhasználó: {{calendar.taskList.selectedTask.user}} </div>
-         <div class="col-lg-12">
-             Határidő:  <input type="text" ng-model="calendar.taskList.selectedTask.start" ng-if="calendar.projects.owner"/>
-                       <label ng-if="!calendar.projects.owner">{{calendar.taskList.selectedTask.start}}</label> 
-             </div>
-         <div class="col-lg-12">
-             <input type="checkbox"
-                    ng-model="calendar.taskList.selectedTask.finished" 
-                    ng-click="calendar.finishTask()" 
-                    ng-disabled="!calendar.taskList.selectedTask.user || (!calendar.projects.owner && !calendar.taskUser())">Kész</input></div>
-         <div class="col-lg-12">
-             Feladat Leírása: 
-              <input type="text" ng-model="calendar.taskList.selectedTask.description"  ng-if="calendar.projects.owner"/>
-              <label ng-if="!calendar.projects.owner">{{calendar.taskList.selectedTask.description}}</label> 
-          </div>
-         </div>            
-            <button type = "button"
-                    class = "btn btn-primary"
-                    ng-click="calendar.updateTask(calendar.taskList.selectedTask)" 
-                    ng-if="calendar.projects.owner"/>
-               Submit changes
-            </button>
-            <button type = "button" 
-                    class = "btn btn-primary"
-                    ng-click="calendar.removeUser(calendar.taskList.selectedTask)"
-                    ng-if="calendar.taskList.selectedTask.user && ( calendar.taskUser()  || calendar.projects.owner ) && !calendar.taskList.selectedTask.finished">
-               Lemond
-            </button>
-            <button type = "button" 
-                    class = "btn btn-primary" 
-                    ng-click="calendar.addUser(calendar.taskList.selectedTask)" 
-                    ng-if="!calendar.taskList.selectedTask.user && !calendar.taskList.newTask">
-               Elvállal
-            </button>
-            
-         </div>
-         
-      </div><!-- /.modal-content -->
-   </div><!-- /.modal-dialog -->
+<!--Feladata módositása vagy létrehozása -->
+<div class="modal fade" id="task" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class = "modal-dialog" style="width:400px">
+		<form name="updateTask" ng-submit="calendar.updateTask()">
+        	<div layout="row" layout-align="center" layout-padding="" ng-cloak="" class="inputIcons " style="width:400px">
+            	<md-content class="md-no-momentum  bordered" style="width:400px">
+					<!-- Project -->
+					<md-input-container class="md-block">
+						<label>Name</label>
+            			<input ng-model="calendar.projects.avaible[calendar.projects.selected].title"
+				 				type="text" 
+								placeholder="Project" 
+								name="title" 
+								ng-required="true"
+								ng-disabled="true">
+           			</md-input-container>
+					<!-- Title -->
+					<md-input-container class="md-block">
+            			<input ng-model="calendar.taskList.selectedTask.title"
+				 				type="text" 
+								placeholder="title" 
+								name="title" 
+								ng-required="true"
+								ng-disabled="!calendar.projects.owner">
+           			</md-input-container>
+					<!-- user -->
+					<md-input-container class="md-block" ng-if="calendar.taskList.selectedTask.user">
+            			<input ng-model="calendar.taskList.selectedTask.user"
+				 				type="text" 
+								placeholder="user" 
+								name="title" 
+								ng-disabled="true">
+           			</md-input-container>
+					<md-checkbox ng-model="calendar.taskList.selectedTask.finished" 
+					 			 aria-label="Kész"
+								 ng-click="calendar.finishTask()"
+								 ng-disabled="!calendar.taskList.selectedTask.user || (!calendar.projects.owner && !calendar.taskUser())">
+            			Kész
+          			</md-checkbox>
+					  </br>
+					<!-- date -->
+					<md-datepicker ng-model="calendar.taskList.selectedTask.start" 
+								   md-placeholder="start"
+								   ng-disabled="!calendar.projects.owner">
+					</md-datepicker>
+		  	 		<!-- description -->
+					<md-input-container class="md-block">
+    	        		<textarea rows="6" cols="30" ng-model="calendar.taskList.selectedTask.description"
+					 			type="text-area" 
+								placeholder="description" 
+								name="title" 
+								ng-required="true"
+								ng-disabled="!calendar.projects.owner">
+						</textarea>
+           			</md-input-container>
+					<div style="text-align:center">
+						<button type = "submit"
+                    			class = "md-button"
+                    			ng-if="calendar.projects.owner"/>
+               				Save
+            			</button>
+            			<button type = "button" 
+                    			class = "md-button"
+                    			ng-click="calendar.removeUser(calendar.taskList.selectedTask)"
+                    			ng-if="calendar.taskList.selectedTask.user && ( calendar.taskUser()  || calendar.projects.owner ) && !calendar.taskList.selectedTask.finished">
+               				Lemond
+            			</button>
+            			<button type = "button" 
+                    			class = "md-button" 
+                    			ng-click="calendar.addUser(calendar.taskList.selectedTask)" 
+                    			ng-if="!calendar.taskList.selectedTask.user && !calendar.taskList.newTask">
+               				Elvállal
+            			</button>
+            			<button type = "button" 
+                    			class = "md-button" 
+                    			ng-click="calendar.deleteTask()" 
+                    			ng-if="calendar.projects.owner && !calendar.taskList.newTask">
+               				Törlés
+            			</button>
+         			</div>   
+            	</md-content>
+         	</div>
+		</form>
+	</div><!-- /.modal-content -->
+ </div><!-- /.modal-dialog -->

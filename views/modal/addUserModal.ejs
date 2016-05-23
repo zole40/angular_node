@@ -1,34 +1,47 @@
-<div class = "modal fade" id = "add_user" tabindex = "-1" role = "dialog" 
-   aria-labelledby = "myModalLabel" aria-hidden = "true">
-   
-   <div class = "modal-dialog" style="width:400px">
-      <div class = "modal-content">
-         
-         <div class = "modal-header">
-            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
-               ×
-            </button>
-            
-            <h4 class = "modal-title" id = "myModalLabel">
-            Felhasználó hozzádása
-            </h4>
-         </div>
-         
-         <div class = "modal-body" style="text-align:center">
-          <div class="selector">
-        <select ng-Cloak ng-model="calendar.userName" class="selectP form-control" ng-change="">
-          <option ng-repeat="option in calendar.allUser" value="{{option.name}}">{{option.name}}</option>
-        </select>
-      </div>
-         <br><button class="btn btn-default">Hozzáad</button>
-
-         <br>
-         Felhasználó n
-         </div>            
-            <button type = "button" class = "btn btn-primary">
-               Submit changes
-            </button>
-         </div>
-         
-      </div><!-- /.modal-content -->
-   </div><!-- /.modal-dialog -->
+<!-- Felhasználó hozzáadása a projekthez illetve törlése abból-->
+<div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class = "modal-dialog" style="width:400px">
+		<div class = "modal-content">   
+			<!-- header -->
+			<div class = "modal-header" style="text-align:center">      
+				<h4 class = "modal-title" id = "myModalLabel" style="text-align:center">
+					Felhasználó
+        		</h4>
+				<!-- add or remove -->
+        		<select ng-model="calendar.select" ng-change="calendar.selectChange()">
+          			<option value="add">Hozzáad</option>
+          			<option value="remove">Eltávolit</option>
+        		</select>    
+			</div>
+			<!-- body -->
+         	<div class = "modal-body" style="text-align:center">
+          		<div class="selector" style="text-align:center">
+					<!-- select user -->
+        			<select ng-Cloak ng-model="calendar.userName" class="form-control"  style="text-align:center">
+          				<option ng-repeat="option in calendar.allUser" value="{{option}}">{{option}}</option>
+        			</select>
+ 		     	</div>      
+       			<button class="md-button" ng-click="calendar.selectUser()" data-ng-disabled="!calendar.allUser.length">Kiválaszt</button>
+       			<div>
+         			Felhasználók: 
+       				<div class="col-lg-12">
+          				<ul>
+            				<li ng-repeat="item in calendar.selectedUsers">{{item}}</li>
+         				</ul>
+        			</div>
+        		</div>
+         	</div>
+			<!-- buttons -->
+         	<div style="text-align:center">
+				 <!-- add -->           
+            	<button class="md-button"" ng-click="calendar.addProjectUser()" ng-if="calendar.select === 'add'">
+               		Hozzáad
+            	</button>
+				<!-- remove -->
+            	<button class="md-button" ng-click="calendar.removeProjectUser()" ng-if="calendar.select === 'remove'">
+               		Eltávolit
+            	</button>
+         	</div>
+		</div> <!-- /.modal-content -->
+	</div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->

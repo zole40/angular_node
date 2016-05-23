@@ -1,39 +1,46 @@
-        <div class="md-container" layout="column" layout-align="center" ng-controller="loginCtrl as login" ng-cloak="" ng-if="!page.isAuthorized()">
-            <div layout="row" class="show-buttons">
-                <button flex class="md-raised md-button bordered" ng-click="login.loginPanel()">Belejentkezés</button>
-                <button flex class="md-raised md-button bordered" ng-click="login.regPanel()">Regisztráció</button>
-            </div>
-            <form name="userForm" ng-submit="login.submit()">
-                <div class="md-raised">
-                    <div layout="row" layout-align="center" layout-padding="" ng-cloak="" class="inputIcons ">
-                        <md-content class="md-no-momentum  bordered">
-                            <md-input-container class="md-icon-float md-block">
-                                <!-- Use floating label instead of placeholder -->
-                                <label>Name</label>
-                                <md-icon md-svg-src="img/icons/ic_person_black_24px.svg" class="name"></md-icon>
-                                <input ng-model="login.user.name" type="text" ng-required="true">
-                            </md-input-container>
-                            <md-input-container class="md-block" ng-if="login.reg">
-                                <md-icon md-svg-src="img/icons/ic_email_black_24px.svg" class="email"></md-icon>
-                                <input ng-model="login.user.email" type="email" placeholder="Email" ng-required="true">
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <!-- Use floating placeholder instead of label -->
-                                <md-icon md-svg-src="img/icons/ic_lock_black_24px.svg" class="password"></md-icon>
-                                <input ng-model="login.user.password" type="password" placeholder="password" name="password" ng-required="true">
-                            </md-input-container>
-            
-                            <md-input-container class="md-block" ng-if="login.reg">
-                                <!-- Use floating placeholder instead of label -->
-                                <md-icon md-svg-src="img/icons/ic_home_black_24px.svg" class="adress"></md-icon>
-                                <input ng-model="login.user.address" type="text" placeholder="adress" ng-required="true" name="pw2">
-                            </md-input-container>
-                            <button type="submit" class="md-raised md-button" ng-if="login.login">Bejelentkezés</button>
-                            <button type="submit" class="md-raised md-button" ng-if="login.reg">Regisztráció</button>
-                        </md-content>
+<!-- Login controller, bejelentkező felület-->
+<div class="md-container" layout="column" layout-align="center" ng-controller="loginCtrl as login" ng-cloak="" ng-if="!page.isAuthorized()">
+    <!-- Header -->
+    <div class="col-sm-6 col-sm-offset-4">
+        <div layout="row" class="show-buttons" style="width:400px">
+           <button flex class="md-raised md-button bordered" ng-click="login.loginPanel()">Belejentkezés</button>
+         <button flex class="md-raised md-button bordered" ng-click="login.regPanel()">Regisztráció</button>
+        </div>
+    </div>
+    <form name="userForm" ng-submit="login.submit()">
+        <div class="md-raised">
+            <div layout="row" layout-align="center" layout-padding="" ng-cloak="" class="inputIcons ">
+                <md-content class="md-no-momentum  bordered">
+                    <!-- username -->
+                    <md-input-container class="md-icon-float md-block">
+                       <label>Name</label>
+                       <md-icon md-svg-src="img/icons/ic_person_black_24px.svg" class="name"></md-icon>
+                       <input ng-model="login.user.name" type="text" ng-required="true">
+                    </md-input-container>
+                    <!-- email -->
+                    <md-input-container class="md-block" ng-if="login.reg">
+                        <md-icon md-svg-src="img/icons/ic_email_black_24px.svg" class="email"></md-icon>
+                        <input ng-model="login.user.email" type="email" placeholder="Email" ng-required="true">
+                    </md-input-container>
+                    <!-- password -->
+                    <md-input-container class="md-block">
+                        <md-icon md-svg-src="img/icons/ic_lock_black_24px.svg" class="password"></md-icon>
+                        <input ng-model="login.user.password" type="password" placeholder="password" name="password" ng-required="true">
+                    </md-input-container>
+                    <!-- address -->           
+                    <md-input-container class="md-block" ng-if="login.reg">
+                        <md-icon md-svg-src="img/icons/ic_home_black_24px.svg" class="adress"></md-icon>
+                        <input ng-model="login.user.address" type="text" placeholder="adress" ng-required="true" name="pw2">
+                    </md-input-container>
+                    <!-- buttons -->
+                    <div style="text-align:center">
+                        <button type="submit" class="md-raised md-button" ng-if="login.login">Bejelentkezés</button>
+                        <button type="submit" class="md-raised md-button" ng-if="login.reg">Regisztráció</button>
                     </div>
-                </div>
-            </form>
-    </div> 
+                </md-content>
+            </div>
+        </div>
+    </form>
+</div> 
 
 

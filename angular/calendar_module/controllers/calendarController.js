@@ -1,27 +1,130 @@
 var Calendar;
 (function (Calendar) {
     var calendarCtrl = (function () {
-        //static $inject = ['$scope','$http','uiCalendarConfig','pageService']
-        function calendarCtrl($scope, $http, uiCalendarConfig, pageService) {
+        function calendarCtrl($scope, $http, pageService) {
             var _this = this;
             this.$scope = $scope;
             this.$http = $http;
-            this.uiCalendarConfig = uiCalendarConfig;
             this.pageService = pageService;
+            this.deleteTask = function () {
+                return _this.taskList.deleteTask(_this.projects.id)
+                    .success(function () {
+                    _this.taskList.getTasks(_this.projects.id)
+                        .success(function () {
+                        return _this.renderCalendar();
+                    }).error(function (data, status) {
+                        if (status == 401) {
+                            _this.pageService.logout();
+                        }
+                    });
+                    var element = angular.element("#task");
+                    element.modal("hide");
+                }).error(function (data, status) {
+                    if (status == 401) {
+                        _this.pageService.logout();
+                    }
+                });
+            };
+            this.selectChange = function () {
+                _this.selectedUsers = new Array();
+                if (_this.select === 'add') {
+                    _this.getAllUser();
+                }
+                else if (_this.select === 'remove') {
+                    _this.allUser = new Array();
+                    _this.projects.avaible[_this.projects.selected].users.forEach(function (element) {
+                        _this.allUser.push(element);
+                    });
+                }
+            };
+            this.select = "add";
+            this.addProjectUser = function () {
+                _this.$http({
+                    method: "POST",
+                    url: "/project/addUser",
+                    data: { users: _this.selectedUsers },
+                    params: { id: _this.projects.id }
+                }).success(function () {
+                    _this.selectedUsers.forEach(function (element) {
+                        _this.projects.avaible[_this.projects.selected].users.push(element);
+                    });
+                    _this.selectedUsers = new Array();
+                    var element = angular.element("#add_user");
+                    element.modal("hide");
+                }).error(function (data, status) {
+                    if (status == 401) {
+                        _this.pageService.logout();
+                    }
+                });
+            };
+            this.removeProjectUser = function () {
+                _this.$http({
+                    method: "POST",
+                    url: "/project/deleteUser",
+                    data: { users: _this.selectedUsers },
+                    params: { id: _this.projects.id }
+                }).success(function () {
+                    _this.selectedUsers.forEach(function (element) {
+                        _this.selectedUsers.forEach(function (element2) {
+                            _this.projects.avaible[_this.projects.selected].users.forEach(function (element) {
+                                if (element === element2) {
+                                    _this.projects.avaible[_this.projects.selected].users.splice(_this.projects.avaible[_this.projects.selected].users.indexOf(element2), 1);
+                                    return;
+                                }
+                            });
+                        });
+                    });
+                    _this.selectedUsers = new Array();
+                    var element = angular.element("#add_user");
+                    element.modal("hide");
+                }).error(function (data, status) {
+                    if (status == 401) {
+                        _this.pageService.logout();
+                    }
+                });
+            };
+            this.allUser = new Array();
+            this.selectedUsers = new Array();
+            this.selectUser = function () {
+                _this.selectedUsers.push(_this.userName);
+                _this.allUser.splice(_this.allUser.indexOf(_this.userName), 1);
+                _this.allUser.length ? _this.userName = _this.allUser[0] : _this.userName = "";
+            };
             this.getAllUser = function () {
                 return _this.$http({
                     method: "GET",
-                    url: "/user/getAll",
-                    params: { id: _this.projects.id }
+                    url: "/user/getAll"
                 }).success(function (data) {
-                    return _this.allUser = data.users;
+                    _this.allUser = new Array();
+                    data.users.forEach((function (element) {
+                        _this.allUser.push(element.name);
+                    }));
+                    _this.projects.avaible[_this.projects.selected].users.forEach(function (element) {
+                        _this.allUser.forEach(function (element2) {
+                            if (element === element2) {
+                                _this.allUser.splice(_this.allUser.indexOf(element2), 1);
+                                return;
+                            }
+                        });
+                    });
+                    _this.allUser.splice(_this.allUser.indexOf(_this.user.name), 1);
+                }).error(function (data, status) {
+                    if (status == 401) {
+                        _this.pageService.logout();
+                    }
                 });
             };
             this.finishTask = function () {
-                return _this.taskList.finish(_this.projects.id)
-                    .success(function () {
-                    _this.renderCalendar();
-                });
+                if (_this.taskList.selectedTask.user) {
+                    _this.taskList.finish(_this.projects.id)
+                        .success(function () {
+                        _this.renderCalendar();
+                    }).error(function (data, status) {
+                        if (status == 401) {
+                            _this.pageService.logout();
+                        }
+                    });
+                }
             };
             this.getEvents = function () {
                 _this.getTasks(_this.projects.id);
@@ -35,6 +138,10 @@ var Calendar;
                 var element = angular.element("#project");
                 element.modal("hide");
                 _this.getEvents();
+            }).error(function (data, status) {
+                if (status == 401) {
+                    _this.pageService.logout();
+                }
             }); };
             this.updateProject = function () {
                 return _this.projects.update()
@@ -89,6 +196,10 @@ var Calendar;
                     _this.taskList.getTasks(_this.projects.id)
                         .success(function () {
                         return _this.renderCalendar();
+                    }).error(function (data, status) {
+                        if (status == 401) {
+                            _this.pageService.logout();
+                        }
                     });
                 })
                     .error(function (data, status) {
@@ -213,6 +324,7 @@ var Calendar;
             };
             this.getProject();
         }
+        calendarCtrl.$inject = ['$scope', '$http', 'pageService'];
         return calendarCtrl;
     }());
     Calendar.calendarCtrl = calendarCtrl;

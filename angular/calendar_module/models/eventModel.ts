@@ -4,6 +4,7 @@ module Calendar{
         removeUser: (id : string) => ng.IHttpPromise<Event>;
         update: (id: string, url : string) => ng.IHttpPromise<Event>;
         finish: (id: string) => ng.IHttpPromise<Event>;
+        delete: (id: string) => ng.IHttpPromise<Event>;
         set: (task : Event) => void;
         title : string;
         _id : string;
@@ -13,6 +14,14 @@ module Calendar{
         finished : boolean;
         description : string;
 		constructor(private $http : ng.IHttpService) {
+            
+            this.delete = (id : string) => 
+                this.$http({
+                   method : "POST",
+                   url : "/task/deleteTask",
+                   data : { id : this._id},
+                   params : {id : id}
+                });
             this.addUser = (id : string) =>  this.$http({
 					method: "POST",
 					url : "/task/addTaskUser",

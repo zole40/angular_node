@@ -2,6 +2,7 @@ module Calendar{
     export class taskList{
         getFreeTasks: (id : string) => ng.IHttpPromise<Event>;
         getTasks: (id : string) => ng.IHttpPromise<Event>;
+        deleteTask: (id : string) => ng.IHttpPromise<Event>;
         getFinished: (id : string) => ng.IHttpPromise<Event>;
         removeUser: (id : string) => ng.IHttpPromise<Event>;
         addUser: (id : string,user : User) => ng.IHttpPromise<Event>;
@@ -14,7 +15,23 @@ module Calendar{
                     public eventSources : Array<Event>,
                     public tasks : Array<Event>,
                     public finished : Array<Event>,
-                    public selectedTask: Event){                        
+                    public selectedTask: Event){      
+                        
+                this.deleteTask = (id : string) =>
+                    this.selectedTask.delete(id)
+                        .success(() => 
+                        {
+                            let index = this.tasks.indexOf(this.selectedTask) 
+                            if(index > -1){
+                                this.tasks.splice(index,1);
+                            }
+                            else {
+                                index = this.finished.indexOf(this.selectedTask);
+                                if(index > -1){
+                                    this.finished.splice(index,1);
+                                }
+                            }
+                        });                   
                 this.getFreeTasks = (id : string) => this.$http({
                     method : "GET",
                     url : "task/getFreeTask",
@@ -87,9 +104,14 @@ module Calendar{
                     this.selectTask = (task : Event) => {
                         task ? 
                             this.newTask = false : this.newTask = true;
-                        this.newTask ? 
-                            this.selectedTask = new Event(this.$http) : this.selectedTask = task;
-                    };
+                        if(this.newTask){
+                            this.selectedTask = new Event(this.$http);
+                        } 
+                        else{
+                            this.selectedTask = task;
+                            this.selectedTask.start = new Date(this.selectedTask.start.toString());
+                        }    
+                };
                     
                 this.updateTask = (id :string) => {
 				    let url = "/task/";

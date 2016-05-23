@@ -1,51 +1,40 @@
-<!--Form for update user -->
-<div class = "modal fade" id = "userModal" tabindex = "-1" role = "dialog" 
-   aria-labelledby = "myModalLabel" aria-hidden = "true">
- <div class = "modal-dialog" style="width:400px">
-      <div class = "modal-content" style="min-height:400px">
-         
-         <div class = "modal-header">
-            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
-               ×
-            </button>
-            
-            <h4 class = "modal-title" id = "myModalLabel">
-            Felhasználó hozzádása
-            </h4>
-         </div>
-            <div class="modal-body" id="userModalBody" style="width:300px;margin-left:40px">
+<!--Felhasználói adatok módoszutása -->
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ 	<div class = "modal-dialog">
+    	<form name="updateUser" ng-submit="calendar.updateUser()">
+        	<div layout="row" layout-align="center" layout-padding="" ng-cloak="" class="inputIcons " style="width:300px">
+            	<md-content class="md-no-momentum  bordered" style="width:300px">
+					<!-- username-->
+                	<md-input-container class="md-icon-float md-block">
+						<label>Name</label>
+                        <md-icon md-svg-src="img/icons/ic_person_black_24px.svg" class="name"></md-icon>
+                        <input ng-model="calendar.user.name" type="text" ng-required="true">
+                    </md-input-container>
+					 <!-- email -->
+                    <md-input-container class="md-block">
+                     	<md-icon md-svg-src="img/icons/ic_email_black_24px.svg" class="email"></md-icon>
+                        <input ng-model="calendar.user.email" type="email" placeholder="Email" ng-required="true">
+                    </md-input-container>
+					<!-- password -->
+                    <md-input-container class="md-block">
+                    	<md-icon md-svg-src="img/icons/ic_lock_black_24px.svg" class="password"></md-icon>
+                        <input ng-model="calendar.user.password" type="password" placeholder="password" name="password" ng-required="true">
+                    </md-input-container>
+            		<!-- address -->
+                    <md-input-container class="md-block">
+                    	<md-icon md-svg-src="img/icons/ic_home_black_24px.svg" class="adress"></md-icon>
+                        <input ng-model="calendar.user.address" type="text" placeholder="adress" ng-required="true" name="pw2">
+                    </md-input-container>
+					<!-- submit -->
+					<div style="text-align:center">
+                    	<button type="submit" class="md-button" >Mentés</button>
+					</div>
+				</md-content>
+			</div> <!-- layout -->
+		</form>
+	</div> <!-- /.modal dialog -->
+</div> <!-- /.modal -->
+  
 
-        			<form role="form">
-          			<div class="form-group">
-            			<div class="input-group">
-              			<input type="text" class="form-control" id="uLogin" placeholder="Name" ng-model="calendar.user.name">
-              			<label for="uLogin" class="input-group-addon glyphicon glyphicon-user" ></label>
-            			</div>
-          			</div> <!-- /.form-group -->
-          			
-								<div class="form-group">
-            			<div class="input-group">
-              			<input type="password" class="form-control" id="uPassword" placeholder="Password"  ng-model="calendar.user.password">
-              			<label for="uPassword" class="input-group-addon glyphicon glyphicon-lock"></label>
-            			</div> <!-- /.input-group -->
-         			 </div> <!-- /.form-group -->
 
-           		<div class="form-group">
-            		<div class="input-group">
-              		<input type="text" class="form-control" id="uAdress" placeholder="Adress" ng-model="calendar.user.address">
-              		<label for="uAdress" class="input-group-addon glyphicon glyphicon-home" ></label>
-            		</div> <!-- /.input-group -->
-          		</div> <!-- /.form-group -->
 
- 		          <div class="form-group">
-    		        <div class="input-group">
-        		      <input type="text" class="form-control" id="uDate" placeholder="email"  ng-model="calendar.user.email">
-           		   <label for="uPDate" class="input-group-addon glyphicon glyphicon-envelope"></label>
-            		</div> <!-- /.input-group -->
-         	 	</div> <!-- /.form-group -->
-          	<button class="btn btn-default" ng-click="calendar.updateUser()">Save</button>
-        	</form>
-            </div>
-            </div>
-</div>
-</div>

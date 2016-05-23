@@ -103,16 +103,6 @@ iframe.browser-content {
   background-color: rgba(230, 230, 229, 0.96);
 }
 
-.inputdemoIcons {
-  /*
-.right-icon {
-  position: absolute;
-  top: 4px;
-  right: 2px;
-  left: auto;
-  margin-top: 0;
-}
-*/ }
   .inputIcons .inputIcon {
     min-height: 48px;
   }
@@ -158,6 +148,10 @@ iframe.browser-content {
 
 .selectP{
 	width: 120px;
+    align-content: center;
+    text-align: center;
+    align-self: center;
+    align-items: center;
 }
 option{
 	text-align: center;

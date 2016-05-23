@@ -1,39 +1,41 @@
-<!-- Form for create or modify project -->
-<div class = "modal fade" id = "project" tabindex = "-1" role = "dialog" 
-   aria-labelledby = "myModalLabel" aria-hidden = "true">
-   
-   <div class = "modal-dialog" style="width:400px">
-      <div class = "modal-content">
-         
-         <div class = "modal-header">
-            <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true">
-               ×
-            </button>
-            
-            <h4 class = "modal-title" id = "myModalLabel">
-            Új projekt
-            </h4>
-         </div>
-         
-         <div class = "modal-body">
-           <div class="col-lg-12">
-             Projekt Neve: 
-              <input type="text" ng-if="calendar.projects.owner || calendar.projects.newP" ng-model="calendar.projects.selectedP.title"> </input>
-              <label ng-bind="calendar.projects.selectedP.title" ng-if="!calendar.projects.owner && !calendar.projects.newP" />
-           </div>
-           <div class="col-lg-12">
-             Leírás: 
-             <input type="textfield" ng-if="calendar.projects.owner || calendar.projects.newP" ng-model="calendar.projects.selectedP.description"></input>
-             <label ng-bind="calendar.projects.selectedP.description" ng-if="!calendar.projects.owner && !calendar.projects.newP" />
-          </div> 
-         </div>            
-            <button type = "button" class = "btn btn-primary" ng-if="calendar.projects.owner || calendar.projects.newP" ng-click="calendar.updateProject()">
-               Submit changes
-            </button>
-             <button type = "button" class = "btn btn-primary" ng-if="calendar.projects.owner && !calendar.projects.newP" ng-click="calendar.deleteProject()">
-               Delete
-            </button>
-         </div>
-         
-      </div><!-- /.modal-content -->
-   </div><!-- /.modal-dialog -->
+<!-- Project létrehozása vagy módositás -->
+<div class="modal fade" id="project" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<form name="project" ng-submit="calendar.updateProject()">
+			<div layout="row" layout-align="center" layout-padding="" ng-cloak="" class="inputIcons" style="width:300px">
+				<md-content class="md-no-momentum  bordered" style="width:300px">
+					<!-- title -->
+					<md-input-container class="md-block">
+            			<input ng-model="calendar.projects.selectedP.title"
+				 				type="text" 
+								placeholder="title" 
+								name="title" 
+								ng-required="true"
+								ng-disabled="!calendar.projects.owner && !calendar.projects.newP">
+           			</md-input-container>
+		  	 		<!-- description -->
+					<md-input-container class="md-block">
+    	        		<textarea rows="6" cols="30" ng-model="calendar.projects.selectedP.description"
+					 			type="text-area" 
+								placeholder="description" 
+								name="title" 
+								ng-required="true"
+								ng-disabled="!calendar.projects.owner && !calendar.projects.newP">
+						</textarea>
+           			</md-input-container>          
+            		<!-- buttons -->
+					<div style="text-align:center">
+						<!-- submit -->
+						<button type="submit" class="md-button" ng-if="calendar.projects.owner || calendar.projects.newP">
+               				Save
+            			</button>
+						<!-- delete -->
+             			<button type="button" class="md-button" ng-if="calendar.projects.owner && !calendar.projects.newP" ng-click="calendar.deleteProject()">
+               				Delete
+            			</button>
+					</div>
+				</md-content>
+			</div>
+		</form>						
+	</div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->

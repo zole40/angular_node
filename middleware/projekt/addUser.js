@@ -19,8 +19,19 @@
 				logger(1,req.session.user.name + "Access denied to project" + result.id);
           		return res.status(403).send("Access denied");
         	}
-            var newUsers = result.users.concat(req.body.users);
-            result.users = newUsers;
+			var b;
+			for(var j in req.body.users){
+				b = true;
+				for(var i in result.users){
+						if(result.users[i] === req.body.users[j]){
+							b = false;
+						}
+
+				}
+				if(b){
+					result.users.push(req.body.users[j]);
+				}
+			}
         	if(result.save(function (err) {
 				  /** Hiba esetén logolja 2-es statusal majd false értékkel visszatér */
   				if (err) {

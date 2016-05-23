@@ -8,6 +8,21 @@ var Calendar;
             this.tasks = tasks;
             this.finished = finished;
             this.selectedTask = selectedTask;
+            this.deleteTask = function (id) {
+                return _this.selectedTask.delete(id)
+                    .success(function () {
+                    var index = _this.tasks.indexOf(_this.selectedTask);
+                    if (index > -1) {
+                        _this.tasks.splice(index, 1);
+                    }
+                    else {
+                        index = _this.finished.indexOf(_this.selectedTask);
+                        if (index > -1) {
+                            _this.finished.splice(index, 1);
+                        }
+                    }
+                });
+            };
             this.getFreeTasks = function (id) { return _this.$http({
                 method: "GET",
                 url: "task/getFreeTask",
@@ -76,8 +91,13 @@ var Calendar;
             this.selectTask = function (task) {
                 task ?
                     _this.newTask = false : _this.newTask = true;
-                _this.newTask ?
-                    _this.selectedTask = new Calendar.Event(_this.$http) : _this.selectedTask = task;
+                if (_this.newTask) {
+                    _this.selectedTask = new Calendar.Event(_this.$http);
+                }
+                else {
+                    _this.selectedTask = task;
+                    _this.selectedTask.start = new Date(_this.selectedTask.start.toString());
+                }
             };
             this.updateTask = function (id) {
                 var url = "/task/";

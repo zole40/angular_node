@@ -1,58 +1,204 @@
 module Calendar {
     export class calendarCtrl {
         
+		/**Calendar */
         uiConfig: Object;
         alertEventOnClick: Object;
-        alertOnResize: Object;
+		alertOnDrop: (event: Event,delta,revertFunc) => void;
+		eventClick: (event : Event) => void;
+		renderCalendar: () => void;
+		
+		/**Project */
 		projects: ProjectList;
-        user : User; 
-		adminMenu: boolean;
-		changeColor: () => void;        
-        getTasks: (_id : string) => void;
+        updateProject: () => void;
+		addProjectUser: () => void;
+		getProject: () => void;
+		changeProject: () => void;
+		deleteProject: () => void;
+		removeProjectUser: () => void;
+		selectProject: (newProject : boolean) => void;
+		
+		/**Task */
+		taskList : taskList;
+		getTasks: (_id : string) => void;
         getFreeTasks: (_id : string) => void;
 		getFinishedTask: (_id : string) => void;
         updateTask: () => void;
-		updateProject: () => void;
 		selectTask: (task : Event) => void;
-        alertOnDrop: (event: Event,delta,revertFunc) => void;
-		eventClick: (event : Event) => void;
-		/**remove user from task */
 		removeUser: () => void;
 		addUser: () => void;
-		renderCalendar: () => void;
 		taskUser: () => boolean;
 		finishTask: () => void;
-		getProject: () => void;
-		changeProject: () => void;
-		updateUser: () => void;
-		taskList : taskList;
+		deleteTask: () => void;
 		getEvents: () => void;
-		allUser: Array<User>
-		selectProject: (newProject : boolean) => void;
-		getAllUser: () => void;
-		deleteProject: () => void;
+		
+		/**user */
+		user : User; 
+		changeColor: () => void;
+		updateUser: () => void;
+		
+		/**Add user */
 		userName: string;
-		//static $inject = ['$scope','$http','uiCalendarConfig','pageService']
+		select: string;
+		allUser: Array<string>
+		selectedUsers: Array<string>;
+		getAllUser: () => void;
+		selectUser: () => void;
+		selectChange: () => void;
+		
+		adminMenu: boolean;
+		
+		static $inject = ['$scope','$http','pageService']
 		constructor(private $scope: ng.IScope,
                     private $http: ng.IHttpService,
-                    private uiCalendarConfig: any,
                     private pageService : pageService
                     )
        {
+		   this.deleteTask = () =>
+		   		this.taskList.deleteTask(this.projects.id)
+				   .success(() =>
+				   {
+				   		this.taskList.getTasks(this.projects.id)
+				   			.success(() =>
+				   				this.renderCalendar()
+				   		).error((data : any, status : number) => 
+						{
+                   		if(status == 401) { 
+					   		this.pageService.logout()
+				   		}
+                	});
+						let element = <any> angular.element("#task");
+						element.modal("hide");
+						
+				   }).error((data : any, status : number) => 
+					{
+                   		if(status == 401) { 
+					   		this.pageService.logout()
+				   		}
+                	})
+				   ;
+		   this.selectChange = () =>
+		   {
+			   this.selectedUsers = new Array<string>();
+			   if(this.select === 'add'){
+				   this.getAllUser();
+			   }
+			   else if (this.select === 'remove'){
+				   this.allUser = new Array<string>();
+				   this.projects.avaible[this.projects.selected].users.forEach((element) =>
+				   {
+					   this.allUser.push(element);
+				   })
+				   
+			   }
+		   }
+		   this.select = "add";
+		   this.addProjectUser = () =>
+		   {
+			   this.$http({
+				  method : "POST",
+				  url : "/project/addUser",
+				  data :  {users : this.selectedUsers},
+				  params : {id : this.projects.id}
+			   }).success(() => {
+					this.selectedUsers.forEach((element) =>
+					{
+						this.projects.avaible[this.projects.selected].users.push(element);	
+					});
+				  	this.selectedUsers = new Array<string>();
+					let element = <any> angular.element("#add_user");
+					element.modal("hide");
+				   
+			   }).error((data : any, status : number) => 
+					{
+                   		if(status == 401) { 
+					   		this.pageService.logout()
+				   		}
+                	});
+		   }
+		  this.removeProjectUser = () =>
+		   {
+			   this.$http({
+				  method : "POST",
+				  url : "/project/deleteUser",
+				  data :  {users : this.selectedUsers},
+				  params : {id : this.projects.id}
+			   }).success(() => {
+					this.selectedUsers.forEach((element) =>
+					{
+					this.selectedUsers.forEach((element2) =>
+						{
+							this.projects.avaible[this.projects.selected].users.forEach((element)=>{
+								if(element === element2){
+									this.projects.avaible[this.projects.selected].users.splice(this.projects.avaible[this.projects.selected].users.indexOf(element2),1);
+									return;
+								}
+							});
+						});
+					});
+				  	this.selectedUsers = new Array<string>();
+					let element = <any> angular.element("#add_user");
+					element.modal("hide");
+				   
+			   })		   	.error((data : any, status : number) => 
+					{
+                   		if(status == 401) { 
+					   		this.pageService.logout()
+				   		}
+                	});
+		   }
+		   
+		   this.allUser = new Array<string>();
+		   this.selectedUsers = new Array<string>();
+		   this.selectUser = () =>{
+				this.selectedUsers.push(this.userName);
+				this.allUser.splice(this.allUser.indexOf(this.userName),1);
+				this.allUser.length ? this.userName = this.allUser[0] : this.userName = "";
+	
+		   };
 		   this.getAllUser = () => 
 		   		this.$http({
 					   method : "GET",
-					   url : "/user/getAll",
-					 	params : {id : this.projects.id}   
+					   url : "/user/getAll"
 				   }).success((data : any) => 
-						this.allUser = data.users);
+					{
+						this.allUser = new Array<string>();
+				   data.users.forEach((element =>
+				   {
+					   this.allUser.push(element.name);
+				   }))
+						this.projects.avaible[this.projects.selected].users.forEach((element) =>
+						{
+							this.allUser.forEach((element2)=>{
+								if(element === element2){
+									this.allUser.splice(this.allUser.indexOf(element2),1);
+									return;
+								}
+							});
+						});
+						this.allUser.splice(this.allUser.indexOf(this.user.name),1);
+				   }).error((data : any, status : number) => 
+					{
+                   		if(status == 401) { 
+					   		this.pageService.logout()
+				   		}
+                	});
 						
 		   this.finishTask = () => 
+		   {
+			   if(this.taskList.selectedTask.user){
 		   		this.taskList.finish(this.projects.id)
 				   .success( () => 
 				   {
 				   		this.renderCalendar();
-				   })
+				   }).error((data : any, status : number) => 
+					{
+                   		if(status == 401) { 
+					   		this.pageService.logout()
+				   		}
+                	});
+		   }
+		   }
 		   this.getEvents = () =>
 		   {
 			   	this.getTasks(  this.projects.id);
@@ -68,8 +214,13 @@ module Calendar {
 			   	let element = <any> angular.element("#project");
 				element.modal("hide");
 			   	this.getEvents();
-		   })
-		   	this.updateProject = () => 
+		   }).error((data : any, status : number) => 
+					{
+                   		if(status == 401) { 
+					   		this.pageService.logout()
+				   		}
+                	})
+		   this.updateProject = () => 
 		   		this.projects.update()
 				   .success((data : any , status : number) =>
 				   {
@@ -127,7 +278,12 @@ module Calendar {
 						element.modal("hide");
 						this.taskList.getTasks(this.projects.id)
 							.success(() => 
-								this.renderCalendar())	
+								this.renderCalendar()).error((data : any, status : number) => 
+					{
+                   		if(status == 401) { 
+					   		this.pageService.logout()
+				   		}
+                	})	
 					})
 					.error((data : any, status : number) => 
 					{
@@ -151,6 +307,7 @@ module Calendar {
 			{
 				let task = new Event(this.$http);
 				task.set(event);
+				
 				this.selectTask(task);
 				this.updateTask();
 		   	};

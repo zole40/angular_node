@@ -1,13 +1,30 @@
+<!-- project admin menu -->
 <div class="container" style="margin-bottom:20px;width:600px" ng-if="calendar.adminMenu">
+  <!-- új project -->
   <div class="col-lg-4" style="text-align:center;width:100px">
-<a  class="btn btn-default" data-toggle = "modal" data-target = "#project" ng-click="calendar.selectProject(true)">Új Projekt</a></div>
- <div class="col-lg-4"  style="text-align:center;width:100px">
-<a  class="btn btn-default" data-toggle = "modal" data-target = "#project" ng-click="calendar.selectProject(false)">Részletek</a></div>
- <div class="col-lg-4"  style="text-align:center;width:100px">
-<a  class="btn btn-default" data-toggle = "modal" data-target = "#task" ng-click="calendar.selectTask()" ng-if="calendar.projects.owner">Új Feladat</a></div>
- <div class="col-lg-4"  style="text-align:center;width:200px">
-<a  class="btn btn-default" data-toggle = "modal" data-target = "#add_user" ng-click="calendar.getAllUser()" ng-if="calendar.projects.owner">Felhasználó hozzáadása</a></div>
-<%- include('modal/projectModal') %>
-<%- include('modal/addUserModal') %>   
+    <a  class="btn btn-default" data-toggle = "modal" data-target = "#project" ng-click="calendar.selectProject(true)">
+      Új Projekt
+    </a>
+  </div>
+  <!-- Részletek -->
+  <div class="col-lg-4"  style="text-align:center;width:100px">
+    <a  class="btn btn-default" data-toggle = "modal" data-target = "#project" ng-click="calendar.selectProject(false)">
+      Részletek
+    </a>
+  </div>
+  <!-- Új feladat -->
+  <div class="col-lg-4"  style="text-align:center;width:100px">
+    <a  class="btn btn-default" data-toggle = "modal" data-target = "#task" ng-click="calendar.selectTask()" ng-if="calendar.projects.owner">
+      Új Feladat
+    </a>
+  </div>
+  <!-- Felhaaználók hozzáadása/törlése-->
+  <div class="col-lg-4"  style="text-align:center;width:200px">
+    <a  class="btn btn-default" data-toggle = "modal" data-target = "#add_user" ng-click="calendar.getAllUser()" ng-if="calendar.projects.owner">
+      Felhasználó hozzáadása
+    </a>
+  </div>
+  <%- include('modal/projectModal') %>
+  <%- include('modal/addUserModal') %>   
 </div>
 

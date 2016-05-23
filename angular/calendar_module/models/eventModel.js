@@ -4,6 +4,14 @@ var Calendar;
         function Event($http) {
             var _this = this;
             this.$http = $http;
+            this.delete = function (id) {
+                return _this.$http({
+                    method: "POST",
+                    url: "/task/deleteTask",
+                    data: { id: _this._id },
+                    params: { id: id }
+                });
+            };
             this.addUser = function (id) { return _this.$http({
                 method: "POST",
                 url: "/task/addTaskUser",
